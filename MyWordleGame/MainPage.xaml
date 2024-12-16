@@ -4,33 +4,7 @@
              x:Class="MyWordleGame.MainPage"
              Title="Wordle Game">
 
-    <ContentPage.Resources>
-        <!-- Keys -->
-        <Style x:Key="LetterKey" TargetType="Button">
-            <Setter Property="BackgroundColor" Value="Gray"/>
-            <Setter Property="TextColor" Value="SeaShell"/>
-            <Setter Property="FontSize" Value="16"/>
-            <Setter Property="FontAttributes" Value="Bold"/>
-            <Setter Property="CornerRadius" Value="10"/>
-            <Setter  Property="HeightRequest" Value="50"/>
-            <Setter Property="WidthRequest" Value="40"/>
-        </Style>
 
-        <!-- Enter & Del -->
-        <Style x:Key="WordsKey" TargetType="Button" BasedOn="{StaticResource LetterKey}">
-            <Setter Property="BackgroundColor" Value="LightGrey"/>
-            <Setter Property="WidthRequest" Value="78"/>
-            <Setter Property="TextColor" Value="DarkGoldenrod"/>
-        </Style>
-
-        <Style x:Key="TitleStyle" TargetType="Label">
-            <Setter Property="TextColor" Value="SeaGreen"/>
-            <Setter Property="FontSize" Value="40"/>
-            <Setter Property="FontAttributes" Value="Bold"/>
-            <Setter Property="HorizontalOptions" Value="Center"/>
-            <Setter Property="Margin" Value="20, 0, 10, 0"/>
-        </Style>
-    </ContentPage.Resources>
 
     <!-- Creating grids -->
     <Grid RowDefinitions="Auto, *, Auto" ColumnDefinitions="*">
@@ -39,7 +13,7 @@
         <Label Text="WORDLE" Style="{StaticResource TitleStyle}" Grid.Row="0"/>
         
         <Grid x:Name="Game" Margin="20" RowSpacing="4" ColumnSpacing="4" Grid.Row="1"/>
-        
+         
         <!-- keyboard -->
         <Grid x:Name="keyboard" Padding="10" RowSpacing="4" ColumnSpacing="4" Grid.Row="2">
 
