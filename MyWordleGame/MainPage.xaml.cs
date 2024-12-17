@@ -21,19 +21,30 @@ namespace MyWordleGame
         // methods for buttons
         private void Key_Clicked(object sender, EventArgs e)
         {
-
+            var button = sender as Button;
+            if (button != null && currentGuess.Length < maxCols)
+            {
+                currentGuess += button.Text; // adding the guess letter to the input box
+                UpdateGuessDisplay(); // calling the method
+            } // if
         } // Key_Clicked
 
         private void Enter_Clicked(object sender, EventArgs e)
         {
-
+            // enter button yet to be completed
         } // Enter_Clicked
 
         private void Del_Clicked(object sender, EventArgs e)
         {
-
+            if (currentGuess.Length > 0)
+            {
+                // removing the last letter
+                currentGuess = currentGuess.Substring(0, currentGuess.Length - 1);
+                UpdateGuessDisplay();
+            } // if
         } // Del_Clicked
 
+        // custom methods
         private void CreateGameGrid()
         {
             for (int row = 0; row < 6; row++) // 6 guesses
@@ -58,5 +69,23 @@ namespace MyWordleGame
                 } // for (col)
             } // for (row)
         } // CreateGameGrid
+
+        private void UpdateGuessDisplay()
+        {
+            // updating the current row
+            for (int i = 0; i < maxCols; i++)
+            {
+                // placing the label in the current row
+                var label = (Label)GameGrid.Children[currentRow * maxCols + i]; 
+
+                // displaying the letter
+                if (i < currentGuess.Length)
+                    label.Text = currentGuess[i].ToString(); // if
+
+                // displaying an empty string
+                else
+                    label.Text = ""; // else
+            } // for
+        } // UpdateGuessDisplay
     } // class
 } // namespace
