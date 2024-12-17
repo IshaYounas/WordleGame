@@ -23,6 +23,7 @@
             <Setter Property="TextColor" Value="DarkGoldenrod"/>
         </Style>
 
+        <!-- Title -->
         <Style x:Key="TitleStyle" TargetType="Label">
             <Setter Property="TextColor" Value="SeaGreen"/>
             <Setter Property="FontSize" Value="40"/>
@@ -37,18 +38,39 @@
         
         <!-- label for the title -->
         <Label Text="WORDLE" Style="{StaticResource TitleStyle}" Grid.Row="0"/>
-        
-        <Grid x:Name="Game" Margin="20" RowSpacing="4" ColumnSpacing="4" Grid.Row="1"/>
-         
-        <!-- keyboard -->
-        <Grid x:Name="keyboard" Padding="10" RowSpacing="4" ColumnSpacing="4" Grid.Row="2">
 
+        <Grid x:Name="GameGrid" Margin="20" RowSpacing="4" ColumnSpacing="4" Padding="320, 80, 0, 5">
+            
+            <!-- 6 rows for 6 tries -->
             <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
+            <!-- 5 columns for 5 letter words -->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+        </Grid>
+
+        <!-- keyboard -->
+        <Grid x:Name="keyboard" Padding="10" RowSpacing="4" ColumnSpacing="4" Grid.Row="2">
+
+            <!-- row allignment of the keyboard -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            
             <!-- buttons for keyboard -->
             <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Grid.Row="0" Spacing="5">
                 <Button Text="Q" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
