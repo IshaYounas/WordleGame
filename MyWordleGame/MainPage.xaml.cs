@@ -68,6 +68,11 @@ namespace MyWordleGame
                     else
                         label.BackgroundColor = Colors.Gray; 
                 } // for
+
+                // moving to the next row
+                currentRow++;
+                currentGuess = "";
+                UpdateGuessDisplay();
             } // if
         } // Enter_Clicked
 
