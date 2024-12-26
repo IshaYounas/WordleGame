@@ -239,7 +239,7 @@ namespace MyWordleGame
             {
                 DisplayAlert("Error", $"Please download file to {localPath} manually", "Ok");
                 return;
-            } // if
+            } // if 
 
             try
             {
