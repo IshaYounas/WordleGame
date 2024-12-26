@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Data;
-using System.Xml.Serialization;
-using MetalPerformanceShaders;
 using Plugin.Maui.Audio;
 namespace MyWordleGame
 {
@@ -46,13 +43,6 @@ namespace MyWordleGame
                 await DisplayAlert("Error", "Guess a 5 letter word", "Ok");
                 return;
             } // if 
-
-            /*
-            if (wordList == null || wordList.Count == 0)
-            {
-                await DisplayAlert("Error", "List not loaded. Please try again later", "Ok");
-                return;
-            } // if */
 
             // if the word is not in the list
             if (!wordList.Contains(currentGuess.ToLower()))
@@ -242,7 +232,7 @@ namespace MyWordleGame
         // file reading methods
         private async Task InitializeList()
         {
-            string localPath = Path.Combine(FileSystem.AppDataDirectory, "words.txt"); // getting the full path for the local file
+            string localPath = Path.Combine(FileSystem.AppDataDirectory, LocalFile); // getting the full path for the local file
 
             // reading the words from the file
             if (!File.Exists(localPath))
