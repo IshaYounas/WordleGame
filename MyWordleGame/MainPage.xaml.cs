@@ -186,7 +186,7 @@ namespace MyWordleGame
             {
                 // rotate and change bg colour
                 await label.RotateTo(360, 1000);
-                label.BackgroundColor = Colors.MistyRose; 
+                label.BackgroundColor = Colors.MistyRose;
             } // foreach
 
             await DisplayAlert("Congrats!", "You Won!!!", "Ok");
