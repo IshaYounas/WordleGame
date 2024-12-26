@@ -40,6 +40,7 @@ namespace MyWordleGame
             // if the word is not 5 letter long
             if (currentGuess.Length != maxCols)
             {
+                Console.WriteLine("Guess is not 5 letters long.");
                 await DisplayAlert("Error", "Guess a 5 letter word", "Ok");
                 return;
             } // if 
@@ -47,6 +48,7 @@ namespace MyWordleGame
             // if the word is not in the list
             if (!wordList.Contains(currentGuess.ToLower()))
             {
+                Console.WriteLine($"Word not found: {currentGuess}");
                 await DisplayAlert("Error", "Word Not Found", "Ok");
                 return;
             } // if
@@ -194,6 +196,8 @@ namespace MyWordleGame
 
         private async Task GameOver()
         {
+            Console.WriteLine($"Game Over: Target Word was: {targetWord}");
+
             // change bg colour and display a pop up alert
             BackgroundColor = Colors.Yellow;
             await DisplayAlert("No Good", $"Correct Word: {targetWord.ToUpper()}", "Try Again");
@@ -233,24 +237,39 @@ namespace MyWordleGame
         private async Task InitializeList()
         {
             string localPath = Path.Combine(FileSystem.AppDataDirectory, LocalFile); // getting the full path for the local file
+            Console.WriteLine($"Local File: {localPath}");
 
-            // reading the words from the file
+            
             if (!File.Exists(localPath))
             {
-                DisplayAlert("Error", $"Please download file to {localPath} manually", "Ok");
-                return;
+                Console.WriteLine("Downloading file");
+                await DownloadFromOnline(localPath); // downloading from online
             } // if 
 
+            // reading the words from the file
             try
             {
-                var words = File.ReadAllText(localPath);
-                wordList = words.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                // opening the file for reading
+                using (StreamReader read = new StreamReader(localPath))
+                {
+                    // reading file, spiltting into line, removing empty entries (whitespace) 
+                    string content = await read.ReadToEndAsync();
+                    wordList = content.Split(new[] { '\r', '\n'}, StringSplitOptions.RemoveEmptyEntries).ToList();
+                } // read
 
                 if (wordList.Count > 0)
                 {
+                    // randomizing a taget word 
                     var word = new Random();
                     targetWord = wordList[word.Next(wordList.Count)].ToLower();
+
+                    Console.WriteLine($"Target Word: {targetWord}");
                 } // if
+
+                else
+                {
+                    DisplayAlert("Error", "Word List Empty.", "OK");
+                }
             } // try
 
             catch (Exception ex)
@@ -259,5 +278,35 @@ namespace MyWordleGame
                 DisplayAlert("Error", "Could not initialize the word list. Please try again.", "OK");
             } // catch
         } // InitializeList
+
+        private async Task DownloadFromOnline(string localPath)
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    string url = "https://raw.githubusercontent.com/DonH-ITS/jsonfiles/main/words.txt";
+                    Console.WriteLine($"Downloaing from URL {url}");
+
+                    // getting the content from the url (online file)
+                    using (Stream response = await client.GetStreamAsync(url))
+
+                    // creating a local file
+                    using (FileStream localFile = new FileStream(localPath, FileMode.Create, FileAccess.Write))
+                    {
+                        await response.CopyToAsync(localFile);
+                    } // file
+                } // HttpClient
+
+                Console.WriteLine("Download Successful!");
+            } // try
+
+            catch (Exception ex) // catching the exception
+            {
+                Console.WriteLine($"Error downloading words: {ex.Message}");
+                await DisplayAlert("Error", "Couldn't download the word list. Try again later.", "OK");
+
+            } // catch
+        } // DownloadFromOnline
     } // class
 } // namespace
