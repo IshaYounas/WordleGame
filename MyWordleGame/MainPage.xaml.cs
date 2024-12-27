@@ -209,6 +209,13 @@
                     label.BackgroundColor = Colors.AntiqueWhite;
                 } // if
             } // foreach
+
+            /// resetting key button colours
+            foreach (var child in keyboard.Children)
+            {
+                if (child is Button button)
+                    button.BackgroundColor = (Color)Application.Current.Resources["Chocolate"]; // if
+            } // foreach
         } // RestartGame
 
         // animation methods
