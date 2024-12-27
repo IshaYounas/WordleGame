@@ -1,6 +1,4 @@
-﻿using System;
-using Plugin.Maui.Audio;
-namespace MyWordleGame
+﻿namespace MyWordleGame
 {
     public partial class MainPage : ContentPage
     {
@@ -17,11 +15,15 @@ namespace MyWordleGame
         public MainPage()
         {
             InitializeComponent();
-
-            // calling custom methods
-            InitializeList();
             CreateGameGrid();
         } // MainPage
+
+        // moving the InitializeList() method call to OnAppearing
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+            await InitializeList();
+        } // OnAppearing
 
         // methods for buttons
         private void Key_Clicked(object sender, EventArgs e)
@@ -65,7 +67,7 @@ namespace MyWordleGame
             currentRow++; // moving to the next row
 
             // if the word is not guessed in 6 tries
-            if (currentRow >= maxRows) 
+            if (currentRow >= maxRows)
                 await GameOver();// if
 
             currentGuess = "";
@@ -129,23 +131,39 @@ namespace MyWordleGame
 
         private void UpdateRow()
         {
+            var trackLetter = targetWord.ToCharArray(); // tracking letters that have been guessed
+            var trackPosition = new bool[maxCols]; // tracking positions
+
+            // checking for correct positions - color green
             for (int i = 0; i < maxCols; i++)
             {
                 var label = (Label)GameGrid.Children[currentRow * maxCols + i];
                 label.Text = currentGuess[i].ToString().ToUpper();
 
-                // setting the colours as it is in  online game
-
                 if (currentGuess[i] == targetWord[i])
+                {
                     CorrectPosition(label);
+                    trackLetter[i] = '\0'; // storing letters that have been matched
+                    trackPosition[i] = true; // storing the correct position
+                } // if
+            } // for
 
-                else if (targetWord.Contains(currentGuess[i]))
-                    WrongPosition(label);
+            // checking for correct letter but wrong position - color green
+            for (int i = 0; i < maxCols; i++)
+            {
+                if (!trackPosition[i])
+                {
+                    var label = (Label)GameGrid.Children[currentRow * maxCols + i];
 
-                else
-                    label.BackgroundColor = Colors.Gray;
+                    if (trackLetter.Contains(currentGuess[i]))
+                    {
+                        WrongPosition(label);
+                        trackLetter[Array.IndexOf(trackLetter, currentGuess[i])] = '\0'; // letter in the word
+                    } // if
 
-                label.Text = currentGuess[i].ToString().ToUpper();
+                    else
+                        label.BackgroundColor = Colors.Gray; // letter is not in the word
+                } // if
             } // for
         } // UpdateRow
 
@@ -163,11 +181,8 @@ namespace MyWordleGame
                             if (targetWord.IndexOf(letter) == currentGuess.IndexOf(letter))
                                 button.BackgroundColor = Colors.Green; // if
 
-                            else
-                            {
-                                if (button.BackgroundColor != Colors.Green)
-                                    button.BackgroundColor = Colors.Yellow; // if
-                            } // else
+                            else if (button.BackgroundColor != Colors.Green)
+                                button.BackgroundColor = Colors.Yellow; // else if
                         } // if
 
                         else
@@ -239,7 +254,7 @@ namespace MyWordleGame
             string localPath = Path.Combine(FileSystem.AppDataDirectory, LocalFile); // getting the full path for the local file
             Console.WriteLine($"Local File: {localPath}");
 
-            
+
             if (!File.Exists(localPath))
             {
                 Console.WriteLine("Downloading file");
@@ -254,7 +269,7 @@ namespace MyWordleGame
                 {
                     // reading file, spiltting into line, removing empty entries (whitespace) 
                     string content = await read.ReadToEndAsync();
-                    wordList = content.Split(new[] { '\r', '\n'}, StringSplitOptions.RemoveEmptyEntries).ToList();
+                    wordList = content.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).ToList();
                 } // read
 
                 if (wordList.Count > 0)
@@ -268,14 +283,14 @@ namespace MyWordleGame
 
                 else
                 {
-                    DisplayAlert("Error", "Word List Empty.", "OK");
+                    await DisplayAlert("Error", "Word List Empty.", "OK");
                 }
             } // try
 
             catch (Exception ex)
             {
                 Console.WriteLine($"Error loading words: {ex.Message}");
-                DisplayAlert("Error", "Could not initialize the word list. Please try again.", "OK");
+                await DisplayAlert("Error", "Could not initialize the word list. Please try again.", "OK");
             } // catch
         } // InitializeList
 
@@ -305,7 +320,6 @@ namespace MyWordleGame
             {
                 Console.WriteLine($"Error downloading words: {ex.Message}");
                 await DisplayAlert("Error", "Couldn't download the word list. Try again later.", "OK");
-
             } // catch
         } // DownloadFromOnline
     } // class
