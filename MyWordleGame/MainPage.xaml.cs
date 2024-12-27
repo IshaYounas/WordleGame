@@ -42,7 +42,6 @@
             // if the word is not 5 letter long
             if (currentGuess.Length != maxCols)
             {
-                Console.WriteLine("Guess is not 5 letters long.");
                 await DisplayAlert("Error", "Guess a 5 letter word", "Ok");
                 return;
             } // if 
@@ -50,7 +49,6 @@
             // if the word is not in the list
             if (!wordList.Contains(currentGuess.ToLower()))
             {
-                Console.WriteLine($"Word not found: {currentGuess}");
                 await DisplayAlert("Error", "Word Not Found", "Ok");
                 return;
             } // if
@@ -83,6 +81,41 @@
                 UpdateGuessDisplay();
             } // if
         } // Del_Clicked
+
+        public void Restart_Clicked(object sender, EventArgs e)
+        {
+            currentRow = 0;
+            currentGuess = "";
+
+            // clearing the grid
+            foreach (var child in GameGrid.Children)
+            {
+                if (child is Label label)
+                {
+                    label.Text = "";
+                    label.BackgroundColor = Colors.AntiqueWhite;
+                } // if
+            } // foreach
+
+            // resetting key button colours
+            foreach (var child in keyboard.Children)
+            {
+                //if (child is Button button)
+                //button.BackgroundColor = (Color)Application.Current.Resources["Chocolate"]; // if
+            } // foreach
+
+            if (wordList.Count > 0)
+            {
+                // randomizing a new target word 
+                var word = new Random();
+                targetWord = wordList[word.Next(wordList.Count)].ToLower();
+
+                Console.WriteLine($"Target Word: {targetWord}");
+            } // if
+
+            else
+                DisplayAlert("Error", "Word List Empty. Please try again", "OK"); // else
+        } // Restart_Clicked
 
         // custom methods
         private void CreateGameGrid()
@@ -121,7 +154,7 @@
 
                 // displaying the letter
                 if (i < currentGuess.Length)
-                    label.Text = currentGuess[i].ToString(); // if
+                    label.Text = currentGuess[i].ToString().ToUpper(); // if
 
                 // displaying an empty string
                 else
@@ -146,89 +179,49 @@
                     trackLetter[i] = '\0'; // storing letters that have been matched
                     trackPosition[i] = true; // storing the correct position
                 } // if
-            } // for
 
-            // checking for correct letter but wrong position - color green
-            for (int i = 0; i < maxCols; i++)
-            {
-                if (!trackPosition[i])
+                else if (trackLetter.Contains(currentGuess[i]))
                 {
-                    var label = (Label)GameGrid.Children[currentRow * maxCols + i];
+                    WrongPosition(label);
+                    trackLetter[Array.IndexOf(trackLetter, currentGuess[i])] = '\0'; // letter in the word
+                } // else if
 
-                    if (trackLetter.Contains(currentGuess[i]))
-                    {
-                        WrongPosition(label);
-                        trackLetter[Array.IndexOf(trackLetter, currentGuess[i])] = '\0'; // letter in the word
-                    } // if
-
-                    else
-                        label.BackgroundColor = Colors.Gray; // letter is not in the word
-                } // if
+                // letter is not in the word
+                else
+                    label.BackgroundColor = Colors.Firebrick; // else
             } // for
         } // UpdateRow
 
         private void UpdateKeyColor()
         {
-            foreach (var letter in currentGuess)
+            for (int i = 0; i < currentGuess.Length; i++)
             {
-                foreach (var child in keyboard.Children)
+                foreach (var letter in currentGuess)
                 {
-                    if (child is Button button && button.Text == letter.ToString().ToUpper())
+                    foreach (var child in keyboard.Children)
                     {
-                        // setting the keyboard colours as it is in online game
-                        if (targetWord.Contains(letter))
+                        if (child is Button button && button.Text == letter.ToString().ToUpper())
                         {
-                            if (targetWord.IndexOf(letter) == currentGuess.IndexOf(letter))
-                                button.BackgroundColor = Colors.Green; // if
+                            // setting the keyboard colours as it is in online game
+                            if (targetWord[i] == letter)
+                                button.BackgroundColor = Colors.Green; 
 
-                            else if (button.BackgroundColor != Colors.Green)
-                                button.BackgroundColor = Colors.Yellow; // else if
+                            else if (targetWord.Contains(letter))
+                            {
+                                if (button.BackgroundColor != Colors.Green)
+                                    button.BackgroundColor = Colors.Yellow;
+                            } // else if
+
+                            else
+                            {
+                                if (button.BackgroundColor != Colors.Green && button.BackgroundColor != Colors.Yellow)
+                                    button.BackgroundColor = Colors.Firebrick; // if
+                            } // else
                         } // if
-
-                        else
-                        {
-                            if (button.BackgroundColor != Colors.Green && button.BackgroundColor != Colors.Yellow)
-                                button.BackgroundColor = Colors.Gray; // if
-                        } // else
-                    } // if
+                    } // foreach
                 } // foreach
-            } // foreach
+            } /// for
         } // UpdateKeyColor
-
-        private async void RestartGame()
-        {
-            currentRow = 0;
-            currentGuess = "";
-
-            // clearing the grid
-            foreach (var child in GameGrid.Children)
-            {
-                if (child is Label label)
-                {
-                    label.Text = "";
-                    label.BackgroundColor = Colors.AntiqueWhite;
-                } // if
-            } // foreach
-
-            // resetting key button colours
-            foreach (var child in keyboard.Children)
-            {
-                //if (child is Button button)
-                    //button.BackgroundColor = (Color)Application.Current.Resources["Chocolate"]; // if
-            } // foreach
-
-            if (wordList.Count > 0)
-            {
-                // randomizing a new target word 
-                var word = new Random();
-                targetWord = wordList[word.Next(wordList.Count)].ToLower();
-
-                Console.WriteLine($"Target Word: {targetWord}");
-            } // if
-
-            else
-                await DisplayAlert("Error", "Word List Empty. Please try again", "OK"); // else
-        } // RestartGame
 
         // animation methods
         private async Task CorrectWord()
@@ -243,29 +236,22 @@
 
             bool playAgain = await DisplayAlert("Congrats!", "You Won!!!", "Play Again", "Exit");
 
+            // passing the current object as sender and empty args
             if (playAgain)
-                RestartGame();
-
-            else
-                Console.WriteLine("Exiting...");
+            {    
+                Restart_Clicked(this, EventArgs.Empty); 
+            }// if
         } // CorrectWord
 
         private async Task GameOver()
         {
-            Console.WriteLine($"Game Over: Target Word was: {targetWord}");
+            bool tryAgain = await DisplayAlert("Bad Luck", $"Correct Word: {targetWord.ToUpper()}", "Try Again", "Exit");
 
-            // change bg colour and display a pop up alert
-            BackgroundColor = Colors.Yellow;
-
-            bool tryAgain = await DisplayAlert("No Good", $"Correct Word: {targetWord.ToUpper()}", "Try Again", "Exit");
-
+            // passing the current object as sender and empty args
             if (tryAgain) // is true
-                RestartGame();
-
-            else
             {
-                Console.WriteLine("Restart option not chosen");
-            }
+                Restart_Clicked(this, EventArgs.Empty); 
+            } // if
         } // GameOver
 
         private async void CorrectPosition(Label label)
@@ -302,14 +288,10 @@
         private async Task InitializeList()
         {
             string localPath = Path.Combine(FileSystem.AppDataDirectory, LocalFile); // getting the full path for the local file
-            Console.WriteLine($"Local File: {localPath}");
-
 
             if (!File.Exists(localPath))
-            {
-                Console.WriteLine("Downloading file");
-                await DownloadFromOnline(localPath); // downloading from online
-            } // if 
+                // downloading from online
+                await DownloadFromOnline(localPath); // if 
 
             // reading the words from the file
             try
@@ -328,7 +310,7 @@
                     var word = new Random();
                     targetWord = wordList[word.Next(wordList.Count)].ToLower();
 
-                    Console.WriteLine($"Target Word: {targetWord}");
+                    await DisplayAlert("Word", $"Target Word: {targetWord}", "Ok");
                 } // if
 
                 else
@@ -337,7 +319,6 @@
 
             catch (Exception ex)
             {
-                Console.WriteLine($"Error loading words: {ex.Message}");
                 await DisplayAlert("Error", "Could not initialize the word list. Please try again.", "OK");
             } // catch
         } // InitializeList
@@ -349,7 +330,6 @@
                 using (HttpClient client = new HttpClient())
                 {
                     string url = "https://raw.githubusercontent.com/DonH-ITS/jsonfiles/main/words.txt";
-                    Console.WriteLine($"Downloaing from URL {url}");
 
                     // getting the content from the url (online file)
                     using (Stream response = await client.GetStreamAsync(url))
@@ -366,9 +346,9 @@
 
             catch (Exception ex) // catching the exception
             {
-                Console.WriteLine($"Error downloading words: {ex.Message}");
                 await DisplayAlert("Error", "Couldn't download the word list. Try again later.", "OK");
             } // catch
         } // DownloadFromOnline
     } // class
 } // namespace
+
