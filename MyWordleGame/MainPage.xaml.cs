@@ -200,7 +200,7 @@
             currentRow = 0;
             currentGuess = "";
 
-            /// clearing the grid
+            // clearing the grid
             foreach (var child in GameGrid.Children)
             {
                 if (child is Label label)
@@ -210,12 +210,24 @@
                 } // if
             } // foreach
 
-            /// resetting key button colours
+            // resetting key button colours
             foreach (var child in keyboard.Children)
             {
-                if (child is Button button)
-                    button.BackgroundColor = (Color)Application.Current.Resources["Chocolate"]; // if
+                //if (child is Button button)
+                    //button.BackgroundColor = (Color)Application.Current.Resources["Chocolate"]; // if
             } // foreach
+
+            if (wordList.Count > 0)
+            {
+                // randomizing a new target word 
+                var word = new Random();
+                targetWord = wordList[word.Next(wordList.Count)].ToLower();
+
+                Console.WriteLine($"Target Word: {targetWord}");
+            } // if
+
+            else
+                await DisplayAlert("Error", "Word List Empty. Please try again", "OK"); // else
         } // RestartGame
 
         // animation methods
@@ -229,7 +241,13 @@
                 label.BackgroundColor = Colors.MistyRose;
             } // foreach
 
-            await DisplayAlert("Congrats!", "You Won!!!", "Ok");
+            bool playAgain = await DisplayAlert("Congrats!", "You Won!!!", "Play Again", "Exit");
+
+            if (playAgain)
+                RestartGame();
+
+            else
+                Console.WriteLine("Exiting...");
         } // CorrectWord
 
         private async Task GameOver()
@@ -238,7 +256,16 @@
 
             // change bg colour and display a pop up alert
             BackgroundColor = Colors.Yellow;
-            await DisplayAlert("No Good", $"Correct Word: {targetWord.ToUpper()}", "Try Again");
+
+            bool tryAgain = await DisplayAlert("No Good", $"Correct Word: {targetWord.ToUpper()}", "Try Again", "Exit");
+
+            if (tryAgain) // is true
+                RestartGame();
+
+            else
+            {
+                Console.WriteLine("Restart option not chosen");
+            }
         } // GameOver
 
         private async void CorrectPosition(Label label)
@@ -305,9 +332,7 @@
                 } // if
 
                 else
-                {
-                    await DisplayAlert("Error", "Word List Empty.", "OK");
-                }
+                    await DisplayAlert("Error", "Word List Empty. Please try again", "OK"); // else
             } // try
 
             catch (Exception ex)

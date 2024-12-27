@@ -34,12 +34,12 @@
     </ContentPage.Resources>
 
     <!-- Creating grids -->
-    <Grid RowDefinitions="Auto, *, Auto" ColumnDefinitions="*">
+    <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="20">
         
         <!-- label for the title -->
         <Label Text="WORDLE" Style="{StaticResource TitleStyle}" Grid.Row="0"/>
 
-        <Grid x:Name="GameGrid" Margin="20" RowSpacing="4" ColumnSpacing="4" Padding="320, 80, 0, 5">
+        <Grid x:Name="GameGrid" Margin="20" RowSpacing="4" ColumnSpacing="4" VerticalOptions="Center" HorizontalOptions="Center">
             
             <!-- 6 rows for 6 tries -->
             <Grid.RowDefinitions>
@@ -62,7 +62,7 @@
         </Grid>
 
         <!-- keyboard -->
-        <Grid x:Name="keyboard" Padding="10" RowSpacing="4" ColumnSpacing="4" Grid.Row="2">
+        <Grid x:Name="keyboard" Padding="10" RowSpacing="4" ColumnSpacing="4" Grid.Row="2" >
 
             <!-- row allignment of the keyboard -->
             <Grid.RowDefinitions>
@@ -109,5 +109,5 @@
                 <Button Text="DEL" Style="{StaticResource WordsKey}" Clicked="Del_Clicked"/>
             </StackLayout>
         </Grid>
-    </Grid>
+    </VerticalStackLayout>
 </ContentPage>
