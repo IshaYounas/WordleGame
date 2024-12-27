@@ -195,6 +195,22 @@
             } // foreach
         } // UpdateKeyColor
 
+        private async void RestartGame()
+        {
+            currentRow = 0;
+            currentGuess = "";
+
+            /// clearing the grid
+            foreach (var child in GameGrid.Children)
+            {
+                if (child is Label label)
+                {
+                    label.Text = "";
+                    label.BackgroundColor = Colors.AntiqueWhite;
+                } // if
+            } // foreach
+        } // RestartGame
+
         // animation methods
         private async Task CorrectWord()
         {
