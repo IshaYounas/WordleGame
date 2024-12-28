@@ -27,7 +27,7 @@ namespace MyWordleGame
             await InitializeList();
         } // OnAppearing
 
-        // methods for buttons
+        // methods for buttons - event handlers
         private void Key_Clicked(object sender, EventArgs e)
         {
             var button = sender as Button;
@@ -118,6 +118,11 @@ namespace MyWordleGame
             else
                 DisplayAlert("Error", "Word List Empty. Please try again", "OK"); // else
         } // Restart_Clicked
+
+        private async void History_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new PlayerHistory());
+        } // History_Clicked
 
         // custom methods
         private void CreateGameGrid()

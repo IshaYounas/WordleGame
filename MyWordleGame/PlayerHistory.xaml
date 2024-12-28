@@ -7,6 +7,19 @@
     <ScrollView>
         <StackLayout x:Name="HistoryLayout">
             
+           <!-- no history avaliable -->
+            <Label Text="No History Found" IsVisible="{Binding IsEmpty}" FontSize="18" TextColor="Black" HorizontalOptions="Center"/>
+        
+            <!-- histopry avaliable -->
+            <CollectionView ItemsSource="{Binding Items}" IsVisible="{Binding IsEmpty}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout BackgroundColor="BlanchedAlmond" Padding="5" Margin="3">
+                            <Label Text="{Binding Description}" TextColor="Black"  FontSize="15" />
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </StackLayout>
     </ScrollView>
 </ContentPage>

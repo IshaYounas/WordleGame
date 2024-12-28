@@ -32,13 +32,16 @@
             <Setter Property="Margin" Value="20, 0, 10, 0"/>
         </Style>
 
+        <!-- additional buttons-->
         <Style x:Key="ButtonStyle" TargetType="Button">
-        <Setter Property="BackgroundColor" Value="Chocolate"/>
-        <Setter Property="TextColor" Value="SeaShell"/>
-        <Setter Property="FontSize" Value="16"/>
-        <Setter Property="FontAttributes" Value="Bold"/>
-        <Setter Property="CornerRadius" Value="15"/>
-        <Setter Property="WidthRequest" Value="135"/>
+            <Setter Property="BackgroundColor" Value="Chocolate"/>
+            <Setter Property="TextColor" Value="SeaShell"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontAttributes" Value="Bold"/>
+            <Setter Property="CornerRadius" Value="15"/>
+            <Setter Property="WidthRequest" Value="135"/>
+            <Setter Property="HorizontalOptions" Value="Center"/>
+            <Setter Property="Margin" Value="20, 5, 20, 5"/>
         </Style>
 </ContentPage.Resources>
 
@@ -69,9 +72,10 @@
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
         </Grid>
-
-        <Button x:Name="Restart" Text="Restart Game" Style="{StaticResource ButtonStyle}" Clicked="Restart_Clicked"/> 
-
+        
+        <Button x:Name="Restart" Text="Restart Game" Style="{StaticResource ButtonStyle}" Clicked="Restart_Clicked"/>
+        <Button x:Name="History" Text="View Game History" Style="{StaticResource ButtonStyle}" Clicked="History_Clicked" WidthRequest="175"/>
+        
         <!-- keyboard -->
         <Grid x:Name="keyboard" Padding="10" RowSpacing="4" ColumnSpacing="4" Grid.Row="2" >
 
