@@ -2,6 +2,7 @@
 {
     public class Progress
     {
+        // variables
         public DateTime TimeStamp { get; set; }
         public string? CorrectWord { get; set; }
         public int Guesses { get; set; }

@@ -4,18 +4,29 @@
              x:Class="MyWordleGame.PlayerHistory"
              Title="Wordle History">
 
+    <ContentPage.Resources>
+        <!-- history labels -->
+        <Style x:Key="HistoryLabels" TargetType="Label">
+            <Setter Property="TextColor" Value="Aquamarine"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontAttributes" Value="Bold"/>
+            <Setter Property="HorizontalOptions" Value="Center"/>
+        </Style>
+
+    </ContentPage.Resources>
+
     <ScrollView>
         <StackLayout x:Name="HistoryLayout">
             
            <!-- no history avaliable -->
-            <Label Text="No History Found" IsVisible="{Binding IsEmpty}" FontSize="18" TextColor="Black" HorizontalOptions="Center"/>
+            <Label Text="No History Found" IsVisible="{Binding IsEmpty}" Style="{StaticResource HistoryLabels}"/>
         
             <!-- histopry avaliable -->
             <CollectionView ItemsSource="{Binding Items}" IsVisible="{Binding IsEmpty}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout BackgroundColor="BlanchedAlmond" Padding="5" Margin="3">
-                            <Label Text="{Binding Description}" TextColor="Black"  FontSize="15" />
+                            <Label Text="{Binding Description}" Style="{StaticResource HistoryLabels}"/>
                         </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
