@@ -2,10 +2,10 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MyWordleGame.PlayerHistory"
-             Title="Player History">
+             Title="Wordle History">
 
     <ScrollView>
-        <StackLayout x:Name="History">
+        <StackLayout x:Name="HistoryLayout">
             
         </StackLayout>
     </ScrollView>

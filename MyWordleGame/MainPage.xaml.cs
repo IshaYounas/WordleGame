@@ -1,4 +1,6 @@
-﻿namespace MyWordleGame
+﻿using System.Text.Json;
+
+namespace MyWordleGame
 {
     public partial class MainPage : ContentPage
     {
@@ -223,6 +225,46 @@
             } /// for
         } // UpdateKeyColor
 
+        private async Task GameOver()
+        {
+            bool tryAgain = await DisplayAlert("Bad Luck", $"Correct Word: {targetWord.ToUpper()}", "Try Again", "Exit");
+
+            SaveHistory(currentRow + 1, targetWord);
+
+            // passing the current object as sender and empty args
+            if (tryAgain) // is true
+            {
+                Restart_Clicked(this, EventArgs.Empty);
+            } // if
+        } // GameOver
+
+        private void SaveHistory(int guesses, string correctWord)
+        {
+            var localPath = Path.Combine(FileSystem.AppDataDirectory, "history_file.json");
+
+            // attempt is an object of the Progress class
+            var attempt = new Progress
+            {
+                TimeStamp = DateTime.Now,
+                CorrectWord = correctWord,
+                Guesses = guesses,
+                // Emoji = 
+            };
+
+            // initialising history list & filling it with the appropriate data
+            List<Progress> PlayerHistory = new List<Progress>();
+
+            if (File.Exists(localPath))
+            {
+                string json = File.ReadAllText(localPath);
+                PlayerHistory = JsonSerializer.Deserialize<List<Progress>>(json); // Serialised into a JSON file and loading would then be using deserialising - project requirement
+            } // if
+
+            PlayerHistory.Add(attempt); // adding the attempt to the history
+            string jsonNew = JsonSerializer.Serialize(PlayerHistory); // Serialised into a JSON file and loading would then be using deserialising - project requirement
+            File.WriteAllText(localPath, jsonNew);
+        } // SaveHistory
+
         // animation methods
         private async Task CorrectWord()
         {
@@ -242,17 +284,6 @@
                 Restart_Clicked(this, EventArgs.Empty); 
             }// if
         } // CorrectWord
-
-        private async Task GameOver()
-        {
-            bool tryAgain = await DisplayAlert("Bad Luck", $"Correct Word: {targetWord.ToUpper()}", "Try Again", "Exit");
-
-            // passing the current object as sender and empty args
-            if (tryAgain) // is true
-            {
-                Restart_Clicked(this, EventArgs.Empty); 
-            } // if
-        } // GameOver
 
         private async void CorrectPosition(Label label)
         {
