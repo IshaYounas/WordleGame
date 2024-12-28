@@ -102,8 +102,8 @@ namespace MyWordleGame
             // resetting key button colours
             foreach (var child in keyboard.Children)
             {
-                //if (child is Button button)
-                //button.BackgroundColor = (Color)Application.Current.Resources["Chocolate"]; // if
+                if (child is Button button)
+                button.BackgroundColor = (Color)Application.Current.Resources["LightCoral"]; // if
             } // foreach
 
             if (wordList.Count > 0)
@@ -190,7 +190,7 @@ namespace MyWordleGame
 
                 // letter is not in the word
                 else
-                    label.BackgroundColor = Colors.Firebrick; // else
+                    label.BackgroundColor = Colors.LightCoral; // else
             } // for
         } // UpdateRow
 
@@ -217,12 +217,12 @@ namespace MyWordleGame
                             else
                             {
                                 if (button.BackgroundColor != Colors.Green && button.BackgroundColor != Colors.Yellow)
-                                    button.BackgroundColor = Colors.Firebrick; // if
+                                    button.BackgroundColor = Colors.LightCoral; // if
                             } // else
                         } // if
                     } // foreach
                 } // foreach
-            } /// for
+            } // for
         } // UpdateKeyColor
 
         private async Task GameOver()
@@ -248,7 +248,7 @@ namespace MyWordleGame
                 TimeStamp = DateTime.Now,
                 CorrectWord = correctWord,
                 Guesses = guesses,
-                // Emoji = 
+                EmojiGrid = HistoryEmojiGrid()
             };
 
             // initialising history list & filling it with the appropriate data
@@ -257,13 +257,45 @@ namespace MyWordleGame
             if (File.Exists(localPath))
             {
                 string json = File.ReadAllText(localPath);
-                PlayerHistory = JsonSerializer.Deserialize<List<Progress>>(json); // Serialised into a JSON file and loading would then be using deserialising - project requirement
+
+                // Serialised into a JSON file and loading would then be using deserialising - project requirement
+                List<Progress>? desterilizeHistory = JsonSerializer.Deserialize<List<Progress>>(json);
+
+                if (desterilizeHistory != null)
+                    PlayerHistory = desterilizeHistory;  // if
             } // if
 
             PlayerHistory.Add(attempt); // adding the attempt to the history
-            string jsonNew = JsonSerializer.Serialize(PlayerHistory); // Serialised into a JSON file and loading would then be using deserialising - project requirement
+            string jsonNew = JsonSerializer.Serialize(PlayerHistory); 
             File.WriteAllText(localPath, jsonNew);
         } // SaveHistory
+
+        private string HistoryEmojiGrid()
+        {
+            string historyGrid = "";
+
+            for (int row = 0; row <= currentRow; row++)
+            {
+                foreach (var label in RowLabel(row))
+                {
+                    // correct position
+                    if (label.BackgroundColor == Colors.Green)
+                        historyGrid += "🟩"; // if
+
+                    // correct letter but wrong position
+                    else if (label.BackgroundColor == Colors.Yellow)
+                        historyGrid += "🟨"; // else if
+
+                    // wrong letter
+                    else
+                        historyGrid += "⬛"; // else
+                } // foreach
+
+                historyGrid += "\n"; // next line
+            } // for (row)
+
+            return historyGrid.Trim();
+        } // HistoryEmojiGrid
 
         // animation methods
         private async Task CorrectWord()
@@ -335,25 +367,32 @@ namespace MyWordleGame
                     wordList = content.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).ToList();
                 } // read
 
-                if (wordList.Count > 0)
-                {
-                    // randomizing a taget word 
-                    var word = new Random();
-                    targetWord = wordList[word.Next(wordList.Count)].ToLower();
-
-                    await DisplayAlert("Word", $"Target Word: {targetWord}", "Ok");
-                } // if
+                if (wordList.Count == 0)
+                    await DisplayAlert("Error", "Word List Empty. Please try again", "OK"); // if
 
                 else
-                    await DisplayAlert("Error", "Word List Empty. Please try again", "OK"); // else
+                    TargetWord(); // else
             } // try
 
             catch (Exception ex)
             {
                 await DisplayAlert("Error", "Could not initialize the word list. Please try again.", "OK");
+                Console.WriteLine($"Error: {ex.Message}");
             } // catch
         } // InitializeList
 
+        private void TargetWord()
+        {
+            if (wordList.Count > 0)
+            {
+                var word = new Random();
+                targetWord = wordList[word.Next(wordList.Count)].ToLower();
+                Console.WriteLine($"Target Word {targetWord}");
+            } // if
+
+            else
+                DisplayAlert("Error", "Word List Empty. Please try again", "OK"); // else
+        } // TargetWord
         private async Task DownloadFromOnline(string localPath)
         {
             try
@@ -378,6 +417,7 @@ namespace MyWordleGame
             catch (Exception ex) // catching the exception
             {
                 await DisplayAlert("Error", "Couldn't download the word list. Try again later.", "OK");
+                Console.WriteLine($"Error: {ex.Message}");
             } // catch
         } // DownloadFromOnline
     } // class

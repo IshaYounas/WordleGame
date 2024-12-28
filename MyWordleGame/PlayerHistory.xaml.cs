@@ -10,6 +10,7 @@ namespace MyWordleGame
 		public PlayerHistory()
 		{
 			InitializeComponent();
+			history = new List<Progress>(); // initialising histiry list
         } // PlayerHistory
     } // class
 } // namespace
