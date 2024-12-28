@@ -103,7 +103,7 @@ namespace MyWordleGame
             foreach (var child in keyboard.Children)
             {
                 if (child is Button button)
-                button.BackgroundColor = (Color)Application.Current.Resources["LightCoral"]; // if
+                button.BackgroundColor = (Color)Application.Current.Resources["MidnightBlue"]; // if
             } // foreach
 
             if (wordList.Count > 0)
@@ -136,7 +136,7 @@ namespace MyWordleGame
                         // setting the properties for the grid
                         BackgroundColor = Colors.AntiqueWhite,
                         FontSize = 20,
-                        TextColor = Colors.DarkBlue,
+                        TextColor = Colors.Orchid,
                         HorizontalTextAlignment = TextAlignment.Center,
                         VerticalTextAlignment = TextAlignment.Center,
                         HeightRequest = 50,
@@ -195,7 +195,7 @@ namespace MyWordleGame
 
                 // letter is not in the word
                 else
-                    label.BackgroundColor = Colors.LightCoral; // else
+                    label.BackgroundColor = Colors.MidnightBlue; // else
             } // for
         } // UpdateRow
 
@@ -222,7 +222,7 @@ namespace MyWordleGame
                             else
                             {
                                 if (button.BackgroundColor != Colors.Green && button.BackgroundColor != Colors.Yellow)
-                                    button.BackgroundColor = Colors.LightCoral; // if
+                                    button.BackgroundColor = Colors.MidnightBlue; // if
                             } // else
                         } // if
                     } // foreach
