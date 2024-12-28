@@ -18,8 +18,6 @@ namespace MyWordleGame
 			// calling custom methods
 			LoadHistory(); 
         } // PlayerHistory
-
-
         // custom methods
         private void LoadHistory()
 		{
@@ -33,7 +31,7 @@ namespace MyWordleGame
                 Items.Clear(); // clearing 
 
 				if (history != null)
-				{
+				{ 
 					foreach (var item in history)
 						Items.Add(item); // adding item to Items list
 				} // if
@@ -47,7 +45,7 @@ namespace MyWordleGame
 
 		// checking if list is empty
 		public bool IsEmpty()
-		{
+		{ 
 			return Items.Count == 0;
         } // IsEmpty
 

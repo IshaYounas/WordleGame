@@ -13,6 +13,10 @@ namespace MyWordleGame
         private const int maxCols = 5;
         private int currentRow = 0;
 
+        // class Player.cs
+        private Player player1;
+        private Player player2;
+
         // constructor
         public MainPage()
         {
@@ -103,7 +107,7 @@ namespace MyWordleGame
             foreach (var child in keyboard.Children)
             {
                 if (child is Button button)
-                button.BackgroundColor = (Color)Application.Current.Resources["MidnightBlue"]; // if
+                    button.BackgroundColor = (Color)Application.Current.Resources["MidnightBlue"]; // if
             } // foreach
 
             if (wordList.Count > 0)
@@ -123,6 +127,24 @@ namespace MyWordleGame
         {
             await Navigation.PushAsync(new PlayerHistory());
         } // History_Clicked
+
+        private void Start_Clicked(object sender, EventArgs e)
+        {
+            string name1 = Player1Entry.Text?.Trim();
+            string name2 = Player2Entry.Text?.Trim();
+
+            // checking for empty inputs
+            if (string.IsNullOrWhiteSpace(name1) || string.IsNullOrWhiteSpace(name2))
+            {
+                DisplayAlert("Input", "Names must be entered", "Ok");
+                return;
+            } // if
+
+            // giving players their names
+            player1 = new Player(name1);
+            player2 = new Player(name2);
+
+        } // Start_Clicked
 
         // custom methods
         private void CreateGameGrid()
@@ -315,6 +337,8 @@ namespace MyWordleGame
 
             bool playAgain = await DisplayAlert("Congrats!", "You Won!!!", "Play Again", "Exit");
 
+            SaveHistory(currentRow + 1, targetWord);
+
             // passing the current object as sender and empty args
             if (playAgain)
             {    
@@ -378,6 +402,18 @@ namespace MyWordleGame
                 else
                     TargetWord(); // else
             } // try
+
+            catch (FileNotFoundException ex)
+            {
+                await DisplayAlert("Error", "File not found. Please try again.", "OK");
+                Console.WriteLine($"FileNotFoundException: {ex.Message}");
+            } // catch
+
+            catch (IOException ex)
+            {
+                await DisplayAlert("Error", "Cannot access file. Please try again.", "OK");
+                Console.WriteLine($"IOException: {ex.Message}");
+            } // catch
 
             catch (Exception ex)
             {

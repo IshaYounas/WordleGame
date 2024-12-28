@@ -47,6 +47,17 @@
 
     <!-- Creating grids -->
     <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="20">
+
+        <!-- adding label for player names and asking input -->
+        <StackLayout>
+            <Label Text="Player 1's Name: "/>
+            <Entry x:Name="Player1Entry" Placeholder="Player 1"/>
+
+            <Label Text="Player 2's Name: "/>
+            <Entry x:Name="Player2Entry" Placeholder="Player 2"/>
+
+            <Button x:Name="Start" Text="Start Game" Clicked="Start_Clicked"/>
+        </StackLayout>
         
         <!-- label for the title -->
         <Label Text="WORDLE" Style="{StaticResource TitleStyle}" Grid.Row="0"/>

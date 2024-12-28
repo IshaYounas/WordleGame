@@ -24,16 +24,22 @@
         private void LoadPlayer() // loading a saved player
         {
             Console.WriteLine($"Welcome back, {Name}!");
-            
-            string data = File.ReadAllText(filePath);
 
-            // replacing the data string with "Score:"
-            if (int.TryParse(data.Replace("Score: ", ""), out int score))  // converting string into an integer
-                Score = score;
-
-            else
+            try
             {
-                Console.WriteLine("Error reading score");
+                string data = File.ReadAllText(filePath);
+
+                // replacing the data string with "Score:"
+                if (int.TryParse(data.Replace("Score: ", ""), out int score))  // converting string into an integer
+                    Score = score; // if
+
+                else
+                    score = 0; // else
+            } // try
+
+            catch (Exception ex) 
+            {
+                Console.WriteLine($"Error reading score, {ex.Message}");
                 Score = 0;
             } // else
         } // LoadPlayer
