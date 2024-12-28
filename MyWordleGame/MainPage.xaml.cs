@@ -385,6 +385,7 @@ namespace MyWordleGame
         {
             if (wordList.Count > 0)
             {
+                // randomising a target word
                 var word = new Random();
                 targetWord = wordList[word.Next(wordList.Count)].ToLower();
                 Console.WriteLine($"Target Word {targetWord}");
