@@ -53,12 +53,17 @@
             <!-- adding label for player names and asking input -->
             <StackLayout HorizontalOptions="Center">
                 <Label Text="Player 1's Name: "/>
-                <Entry x:Name="Player1Entry" Placeholder="Player 1"/>
+                <Entry x:Name="Player1Entry" Placeholder="Player 1" TextChanged="PlayerEntry_TextChanged"/>
 
                 <Label Text="Player 2's Name: "/>
-                <Entry x:Name="Player2Entry" Placeholder="Player 2"/>
+                <Entry x:Name="Player2Entry" Placeholder="Player 2" TextChanged="PlayerEntry_TextChanged"/>
 
-                <Button x:Name="Start" Text="Start Game" Clicked="Start_Clicked"/>
+                <!-- bottons for game -->
+                <HorizontalStackLayout Margin="10">
+                    <Button x:Name="Start" Text="Start Game" Clicked="Start_Clicked" IsEnabled="False" Style="{StaticResource ButtonStyle}"/>
+                    <Button x:Name="Restart" Text="Restart Game" Style="{StaticResource ButtonStyle}" Clicked="Restart_Clicked" IsEnabled="False"/>
+                    <Button x:Name="History" Text="View Game History" Style="{StaticResource ButtonStyle}" Clicked="History_Clicked" WidthRequest="175" IsEnabled="False"/>
+                </HorizontalStackLayout>
             </StackLayout>
         
             <!-- label for the title -->
@@ -85,10 +90,7 @@
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
             </Grid>
-        
-            <Button x:Name="Restart" Text="Restart Game" Style="{StaticResource ButtonStyle}" Clicked="Restart_Clicked"/>
-            <Button x:Name="History" Text="View Game History" Style="{StaticResource ButtonStyle}" Clicked="History_Clicked" WidthRequest="175"/>
-        
+               
             <!-- keyboard -->
             <Grid x:Name="keyboard" Padding="10" RowSpacing="4" ColumnSpacing="4" Grid.Row="2" >
 

@@ -21,7 +21,6 @@ namespace MyWordleGame
         public MainPage()
         {
             InitializeComponent();
-            CreateGameGrid();
         } // MainPage
 
         // moving the InitializeList() method call to OnAppearing
@@ -90,6 +89,7 @@ namespace MyWordleGame
 
         public void Restart_Clicked(object sender, EventArgs e)
         {
+            // resetting everything for the new game
             currentRow = 0;
             currentGuess = "";
 
@@ -130,8 +130,8 @@ namespace MyWordleGame
 
         private void Start_Clicked(object sender, EventArgs e)
         {
-            string name1 = Player1Entry.Text?.Trim();
-            string name2 = Player2Entry.Text?.Trim();
+            string name1 = Player1Entry.Text.Trim();
+            string name2 = Player2Entry.Text.Trim();
 
             // checking for empty inputs
             if (string.IsNullOrWhiteSpace(name1) || string.IsNullOrWhiteSpace(name2))
@@ -140,15 +140,32 @@ namespace MyWordleGame
                 return;
             } // if
 
-            // giving players their names
-            player1 = new Player(name1);
-            player2 = new Player(name2);
+            DisplayAlert("Game Started", $"Welcome to Wordle, {name1} & {name2}", "Ok");
 
+            Player1Entry.IsEnabled = false;
+            Player2Entry.IsEnabled = false;
+            Start.IsEnabled = false; // disabling once clicked
+            Restart.IsEnabled = true; // enabling for restarting game
+            History.IsEnabled = true;  // enabling history to be checked
+
+            CreateGameGrid(); // creating the game grid
         } // Start_Clicked
+
+        private void PlayerEntry_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            // checking if both enteries are filled
+            bool isPlayer1 = !string.IsNullOrWhiteSpace(Player1Entry.Text);
+            bool isPlayer2 = !string.IsNullOrWhiteSpace(Player2Entry.Text);
+
+            // enabling start button - only if both input boxes have names in them
+            Start.IsEnabled = isPlayer1 && isPlayer2;
+        } // PlayerEntry_TextChanged
 
         // custom methods
         private void CreateGameGrid()
         {
+            GameGrid.Children.Clear(); // clearing to reset the grid
+
             for (int row = 0; row < 6; row++) // 6 guesses
             {
                 for (int col = 0; col < 5; col++) // 5 letter words
