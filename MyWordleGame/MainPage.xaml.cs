@@ -250,29 +250,27 @@ namespace MyWordleGame
             } // for
         } // UpdateRow
 
+        // cannot get the keyboard colour to change 
         private void UpdateKeyColor()
         {
-            for (int i = 0; i < currentGuess.Length; i++)
+            foreach (var letter in currentGuess)
             {
-                foreach (var letter in currentGuess)
+                foreach (var child in keyboard.Children)
                 {
-                    foreach (var child in keyboard.Children)
+                    if (child is Button button && button.Text == letter.ToString().ToUpper())
                     {
-                        if (child is Button button && button.Text == letter.ToString().ToUpper())
+                        // setting the keyboard colours as it is in online game
+                        if (targetWord.Contains(letter.ToString().ToLower()))
                         {
-                            // setting the keyboard colours as it is in online game
-                            if (targetWord.Contains(letter.ToString().ToLower()))
-                            {
-                                if (button.BackgroundColor != Colors.Green)
-                                    button.BackgroundColor = Colors.Yellow; // if
-                            }
+                            if (button.BackgroundColor != Colors.Green)
+                                button.BackgroundColor = Colors.Yellow; // if
+                        }
 
-                            else
-                                button.BackgroundColor = Colors.MidnightBlue; // else
-                        } // if
-                    } // foreach
+                        else
+                            button.BackgroundColor = Colors.MidnightBlue; // else
+                    } // if
                 } // foreach
-            } // for
+            } // foreach
 
             for (int i = 0; i < currentGuess.Length;i++)
             {
@@ -280,7 +278,7 @@ namespace MyWordleGame
                 {
                     foreach (var child in keyboard.Children)
                     {
-                        if (child is Button button && button.Text.ToUpper() == currentGuess[i].ToString().ToLower())
+                        if (child is Button button && button.Text == currentGuess[i].ToString().ToUpper())
                             button.Background = Colors.Green;
                     } // foreach
                 } // if
