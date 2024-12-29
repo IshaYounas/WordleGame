@@ -13,10 +13,6 @@ namespace MyWordleGame
         private const int maxCols = 5;
         private int currentRow = 0;
 
-        // class Player.cs
-        private Player player1;
-        private Player player2;
-
         // constructor
         public MainPage()
         {
@@ -213,28 +209,44 @@ namespace MyWordleGame
             var trackLetter = targetWord.ToCharArray(); // tracking letters that have been guessed
             var trackPosition = new bool[maxCols]; // tracking positions
 
-            // checking for correct positions - color green
+            // checking for correct position - color green
             for (int i = 0; i < maxCols; i++)
             {
                 var label = (Label)GameGrid.Children[currentRow * maxCols + i];
-                label.Text = currentGuess[i].ToString().ToUpper();
+                label.Text = currentGuess[i].ToString().ToUpper(); // label text uppercase
 
-                if (currentGuess[i] == targetWord[i])
+                // checking if the guess matches the target word
+                if (currentGuess[i].ToString().ToLower() == targetWord[i].ToString().ToLower())
                 {
-                    CorrectPosition(label);
+                    CorrectPosition(label); 
                     trackLetter[i] = '\0'; // storing letters that have been matched
                     trackPosition[i] = true; // storing the correct position
                 } // if
+            } // for
 
-                else if (trackLetter.Contains(currentGuess[i]))
+            // checking for correct letter but wrong position - color yellow
+            for (int i = 0; i < maxCols; i++)
+            { 
+                // skippinng correct positions
+                if (trackPosition[i])
+                    continue;
+
+                var label = (Label)GameGrid.Children[currentRow * maxCols + i];
+                label.Text = currentGuess[i].ToString().ToUpper();
+
+                if (Array.Exists(trackLetter, letter => letter.ToString().ToLower() == currentGuess[i].ToString().ToLower()))
                 {
                     WrongPosition(label);
-                    trackLetter[Array.IndexOf(trackLetter, currentGuess[i])] = '\0'; // letter in the word
-                } // else if
 
-                // letter is not in the word
+                    // finding the index of the currentGuess =in the trackLetter array
+                    int index = Array.IndexOf(trackLetter, currentGuess[i].ToString().ToLower());
+                    
+                    if (index != -1)
+                        trackLetter[index] = '\0'; // storing letters that have been matched
+                } // if
+
                 else
-                    label.BackgroundColor = Colors.MidnightBlue; // else
+                    label.BackgroundColor = Colors.MidnightBlue;
             } // for
         } // UpdateRow
 
@@ -249,23 +261,29 @@ namespace MyWordleGame
                         if (child is Button button && button.Text == letter.ToString().ToUpper())
                         {
                             // setting the keyboard colours as it is in online game
-                            if (targetWord[i] == letter)
-                                button.BackgroundColor = Colors.Green; 
-
-                            else if (targetWord.Contains(letter))
+                            if (targetWord.Contains(letter.ToString().ToLower()))
                             {
                                 if (button.BackgroundColor != Colors.Green)
-                                    button.BackgroundColor = Colors.Yellow;
-                            } // else if
+                                    button.BackgroundColor = Colors.Yellow; // if
+                            }
 
                             else
-                            {
-                                if (button.BackgroundColor != Colors.Green && button.BackgroundColor != Colors.Yellow)
-                                    button.BackgroundColor = Colors.MidnightBlue; // if
-                            } // else
+                                button.BackgroundColor = Colors.MidnightBlue; // else
                         } // if
                     } // foreach
                 } // foreach
+            } // for
+
+            for (int i = 0; i < currentGuess.Length;i++)
+            {
+                if (currentGuess[i].ToString().ToLower() == targetWord[i].ToString().ToLower())
+                {
+                    foreach (var child in keyboard.Children)
+                    {
+                        if (child is Button button && button.Text.ToUpper() == currentGuess[i].ToString().ToLower())
+                            button.Background = Colors.Green;
+                    } // foreach
+                } // if
             } // for
         } // UpdateKeyColor
 
@@ -277,9 +295,13 @@ namespace MyWordleGame
 
             // passing the current object as sender and empty args
             if (tryAgain) // is true
-            {
-                Restart_Clicked(this, EventArgs.Empty);
-            } // if
+                Restart_Clicked(this, EventArgs.Empty);// if
+
+            else
+            { 
+                await DisplayAlert("Exit", "Thanks for playing", "Bye");
+               // Application.Current.MainPage = new MainPage();
+            } // else
         } // GameOver
 
         private void SaveHistory(int guesses, string correctWord)
@@ -358,9 +380,13 @@ namespace MyWordleGame
 
             // passing the current object as sender and empty args
             if (playAgain)
-            {    
-                Restart_Clicked(this, EventArgs.Empty); 
-            }// if
+                Restart_Clicked(this, EventArgs.Empty);// if
+
+            else
+            {
+                await DisplayAlert("Exit", "Thanks for playing", "Bye");
+                // Application.Current.MainPage = new MainPage();
+            } // else
         } // CorrectWord
 
         private async void CorrectPosition(Label label)

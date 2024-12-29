@@ -59,7 +59,7 @@
                 <Entry x:Name="Player2Entry" Placeholder="Player 2" TextChanged="PlayerEntry_TextChanged"/>
 
                 <!-- bottons for game -->
-                <HorizontalStackLayout Margin="10">
+                <HorizontalStackLayout>
                     <Button x:Name="Start" Text="Start Game" Clicked="Start_Clicked" IsEnabled="False" Style="{StaticResource ButtonStyle}"/>
                     <Button x:Name="Restart" Text="Restart Game" Style="{StaticResource ButtonStyle}" Clicked="Restart_Clicked" IsEnabled="False"/>
                     <Button x:Name="History" Text="View Game History" Style="{StaticResource ButtonStyle}" Clicked="History_Clicked" WidthRequest="175" IsEnabled="False"/>
