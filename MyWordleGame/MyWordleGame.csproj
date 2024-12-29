@@ -63,10 +63,4 @@
 		<PackageReference Include="Plugin.Maui.Audio" Version="3.0.1" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Compile Update="PlayerHistory.xaml.cs">
-	    <DependentUpon>PlayerHistory.xaml</DependentUpon>
-	  </Compile>
-	</ItemGroup>
-
 </Project>

@@ -4,6 +4,7 @@
              x:Class="MyWordleGame.MainPage"
              Title="Wordle Game">
 
+    <!-- styling using Static Resources -->
     <ContentPage.Resources>
         <!-- Keys -->
         <Style x:Key="LetterKey" TargetType="Button">
@@ -45,95 +46,97 @@
         </Style>
 </ContentPage.Resources>
 
-    <!-- Creating grids -->
-    <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="20">
+    <ScrollView>
+        <!-- Creating grids -->
+        <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="20">
 
-        <!-- adding label for player names and asking input -->
-        <StackLayout>
-            <Label Text="Player 1's Name: "/>
-            <Entry x:Name="Player1Entry" Placeholder="Player 1"/>
+            <!-- adding label for player names and asking input -->
+            <StackLayout HorizontalOptions="Center">
+                <Label Text="Player 1's Name: "/>
+                <Entry x:Name="Player1Entry" Placeholder="Player 1"/>
 
-            <Label Text="Player 2's Name: "/>
-            <Entry x:Name="Player2Entry" Placeholder="Player 2"/>
+                <Label Text="Player 2's Name: "/>
+                <Entry x:Name="Player2Entry" Placeholder="Player 2"/>
 
-            <Button x:Name="Start" Text="Start Game" Clicked="Start_Clicked"/>
-        </StackLayout>
+                <Button x:Name="Start" Text="Start Game" Clicked="Start_Clicked"/>
+            </StackLayout>
         
-        <!-- label for the title -->
-        <Label Text="WORDLE" Style="{StaticResource TitleStyle}" Grid.Row="0"/>
+            <!-- label for the title -->
+            <Label Text="WORDLE" Style="{StaticResource TitleStyle}" Grid.Row="0"/>
 
-        <Grid x:Name="GameGrid" Margin="20" RowSpacing="4" ColumnSpacing="4" VerticalOptions="Center" HorizontalOptions="Center">
+            <Grid x:Name="GameGrid" Margin="20" RowSpacing="4" ColumnSpacing="4" VerticalOptions="Center" HorizontalOptions="Center">
             
-            <!-- 6 rows for 6 tries -->
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-            </Grid.RowDefinitions>
+                <!-- 6 rows for 6 tries -->
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
 
-            <!-- 5 columns for 5 letter words -->
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-            </Grid.ColumnDefinitions>
-        </Grid>
+                <!-- 5 columns for 5 letter words -->
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+            </Grid>
         
-        <Button x:Name="Restart" Text="Restart Game" Style="{StaticResource ButtonStyle}" Clicked="Restart_Clicked"/>
-        <Button x:Name="History" Text="View Game History" Style="{StaticResource ButtonStyle}" Clicked="History_Clicked" WidthRequest="175"/>
+            <Button x:Name="Restart" Text="Restart Game" Style="{StaticResource ButtonStyle}" Clicked="Restart_Clicked"/>
+            <Button x:Name="History" Text="View Game History" Style="{StaticResource ButtonStyle}" Clicked="History_Clicked" WidthRequest="175"/>
         
-        <!-- keyboard -->
-        <Grid x:Name="keyboard" Padding="10" RowSpacing="4" ColumnSpacing="4" Grid.Row="2" >
+            <!-- keyboard -->
+            <Grid x:Name="keyboard" Padding="10" RowSpacing="4" ColumnSpacing="4" Grid.Row="2" >
 
-            <!-- row allignment of the keyboard -->
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-            </Grid.RowDefinitions>
+                <!-- row allignment of the keyboard -->
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
 
-            <!-- buttons for keyboard -->
-            <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Grid.Row="0" Spacing="5">
-                <Button Text="Q" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                <Button Text="W" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                <Button Text="E" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                <Button Text="R" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                <Button Text="T" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                <Button Text="Y" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                <Button Text="U" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                <Button Text="I" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                <Button Text="O" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                <Button Text="P" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-            </StackLayout>
+                <!-- buttons for keyboard -->
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Grid.Row="0" Spacing="5">
+                    <Button Text="Q" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
+                    <Button Text="W" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
+                    <Button Text="E" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
+                    <Button Text="R" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
+                    <Button Text="T" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
+                    <Button Text="Y" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
+                    <Button Text="U" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
+                    <Button Text="I" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
+                    <Button Text="O" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
+                    <Button Text="P" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
+                </StackLayout>
 
-            <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Grid.Row="1" Spacing="5">
-                <Button Text="A" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                <Button Text="S" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                <Button Text="D" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                <Button Text="F" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                <Button Text="G" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                <Button Text="H" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                <Button Text="J" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                <Button Text="K" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                <Button Text="L" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-            </StackLayout>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Grid.Row="1" Spacing="5">
+                    <Button Text="A" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
+                    <Button Text="S" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
+                    <Button Text="D" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
+                    <Button Text="F" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
+                    <Button Text="G" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
+                    <Button Text="H" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
+                    <Button Text="J" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
+                    <Button Text="K" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
+                    <Button Text="L" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
+                </StackLayout>
 
-            <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Grid.Row="2" Spacing="5">
-                <Button Text="ENTER" Style="{StaticResource WordsKey}" Clicked="Enter_Clicked"/>
-                <Button Text="Z" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                <Button Text="X" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                <Button Text="C" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                <Button Text="V" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                <Button Text="B" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                <Button Text="N" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                <Button Text="M" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                <Button Text="DEL" Style="{StaticResource WordsKey}" Clicked="Del_Clicked"/>
-            </StackLayout>
-        </Grid>
-    </VerticalStackLayout>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Grid.Row="2" Spacing="5">
+                    <Button Text="ENTER" Style="{StaticResource WordsKey}" Clicked="Enter_Clicked"/>
+                    <Button Text="Z" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
+                    <Button Text="X" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
+                    <Button Text="C" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
+                    <Button Text="V" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
+                    <Button Text="B" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
+                    <Button Text="N" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
+                    <Button Text="M" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
+                    <Button Text="DEL" Style="{StaticResource WordsKey}" Clicked="Del_Clicked"/>
+                </StackLayout>
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
