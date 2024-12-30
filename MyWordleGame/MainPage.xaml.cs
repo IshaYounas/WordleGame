@@ -12,11 +12,14 @@ namespace MyWordleGame
         private const int maxRows = 6;
         private const int maxCols = 5;
         private int currentRow = 0;
+        public PlayerHistoryViewModel HistoryViewModel { get; set; }
 
         // constructor
         public MainPage()
         {
             InitializeComponent();
+            HistoryViewModel = new PlayerHistoryViewModel();
+            BindingContext = this;
         } // MainPage
 
         // moving the InitializeList() method call to OnAppearing
@@ -304,34 +307,24 @@ namespace MyWordleGame
 
         private void SaveHistory(int guesses, string correctWord)
         {
-            var localPath = Path.Combine(FileSystem.AppDataDirectory, "history_file.json");
-
-            // attempt is an object of the Progress class
-            var attempt = new Progress
+            var mainPage = Application.Current.MainPage as MainPage;
+            if (mainPage != null)
             {
-                TimeStamp = DateTime.Now,
-                CorrectWord = correctWord,
-                Guesses = guesses,
-                EmojiGrid = HistoryEmojiGrid()
-            };
+                var viewModel = mainPage.HistoryViewModel;
 
-            // initialising history list & filling it with the appropriate data
-            List<Progress> PlayerHistory = new List<Progress>();
+                var attempt = new Progress
+                {
+                    TimeStamp = DateTime.Now,
+                    CorrectWord = correctWord,
+                    Guesses = guesses,
+                    EmojiGrid = HistoryEmojiGrid()
+                }; // attempt
 
-            if (File.Exists(localPath))
-            {
-                string json = File.ReadAllText(localPath);
-
-                // Serialised into a JSON file and loading would then be using deserialising - project requirement
-                List<Progress>? desterilizeHistory = JsonSerializer.Deserialize<List<Progress>>(json);
-
-                if (desterilizeHistory != null)
-                    PlayerHistory = desterilizeHistory;  // if
+                viewModel.NewAttempt(attempt);
             } // if
 
-            PlayerHistory.Add(attempt); // adding the attempt to the history
-            string jsonNew = JsonSerializer.Serialize(PlayerHistory);
-            File.WriteAllText(localPath, jsonNew);
+            else
+                Console.WriteLine("MainPage cannot be accessed");
         } // SaveHistory
 
         private string HistoryEmojiGrid()

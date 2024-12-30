@@ -26,9 +26,9 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout BackgroundColor="BlanchedAlmond" Padding="5" Margin="3">
-                            <Label Text="{Binding TimeStamp}" Style="{StaticResource HistoryLabels}"/>
-                            <Label Text="{Binding CorrectWord}" Style="{StaticResource HistoryLabels}"/>
-                            <Label Text="{Binding Guesses}" Style="{StaticResource HistoryLabels}"/>
+                            <Label Text="{Binding TimeStamp, StringFormat='Attempt Time: {HH:MM}'}" Style="{StaticResource HistoryLabels}"/>
+                            <Label Text="{Binding CorrectWord, StringFormat='Correct Word: {0}'}" Style="{StaticResource HistoryLabels}"/>
+                            <Label Text="{Binding Guesses, StringFormat='Guesses Taken: {0}'}" Style="{StaticResource HistoryLabels}"/>
                             <Label Text="{Binding EmojiGrid}" Style="{StaticResource HistoryLabels}"/>
                         </StackLayout>
                     </DataTemplate>
