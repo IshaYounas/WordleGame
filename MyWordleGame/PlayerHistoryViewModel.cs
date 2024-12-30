@@ -1,13 +1,14 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Text.Json;
+using System.IO;
 
 namespace MyWordleGame
 {
     public class PlayerHistoryViewModel : INotifyPropertyChanged
     {
         // variables
-        private const string historyFile = "history_file.json";
+        private const string historyFile = "history_file.txt";
         private ObservableCollection<Progress> _items;
 
         public ObservableCollection<Progress> Items
@@ -41,12 +42,26 @@ namespace MyWordleGame
             {
                 try
                 {
-                    // Serialised into a JSON file and loading would then be using deserialising. - project requirement
-                    var json = File.ReadAllText(historyFile);
-                    var history = JsonSerializer.Deserialize<ObservableCollection<Progress>>(json);
+                    using (StreamReader reader = new StreamReader(historyFile))
+                    {
+                        string line;
 
-                    if (history != null)
-                        Items = history; // if
+                        while ((line = reader.ReadLine()) != null)
+                        {
+                            var parts = line.Split('\t');
+
+                            if (parts.Length == 4)
+                            {
+                                DateTime timeStamp = DateTime.Parse(parts[0]);
+                                string correctWord = parts[1];
+                                int guesses = int.Parse(parts[2]);
+                                string emojiGrid = parts[3];
+
+                                var progress = new Progress(timeStamp, correctWord, guesses, emojiGrid);
+                                Items.Add(progress);
+                            } // if
+                        } // while
+                    } // reader
                 } // try
 
                 catch (Exception ex) 
@@ -60,9 +75,15 @@ namespace MyWordleGame
         {
             try
             {
-                // writing text to the file
-                var json = JsonSerializer.Serialize(Items);
-                File.WriteAllText(historyFile, json);
+                using (StreamWriter writer = new StreamWriter(historyFile, false)) // appending
+                {
+                    foreach (var item in Items)
+                    {
+                        // writing to the file
+                        string line = $"{item.TimeStamp:O}\n{item.CorrectWord}\n{item.Guesses}\n{item.EmojiGrid}";
+                        writer.WriteLine(line);
+                    } // foreach
+                } // writer
             } // try
 
             catch (Exception ex)

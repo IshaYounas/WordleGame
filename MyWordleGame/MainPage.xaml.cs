@@ -282,7 +282,9 @@ namespace MyWordleGame
                     foreach (var child in keyboard.Children)
                     {
                         if (child is Button button && button.Text == currentGuess[i].ToString().ToUpper())
-                            button.Background = Colors.Green;
+                        {
+                            button.BackgroundColor = Colors.Green; 
+                        } // if
                     } // foreach
                 } // if
             } // for
@@ -299,9 +301,12 @@ namespace MyWordleGame
                 Restart_Clicked(this, EventArgs.Empty);// if
 
             else
-            { 
-                await DisplayAlert("Exit", "Thanks for playing", "Bye");
-               // Application.Current.MainPage = new MainPage();
+            {
+                var exitConfirmation = await DisplayAlert("Exit", "Are you sure you want to exit?", "Yes", "No");
+                if (exitConfirmation)
+                {
+                    Application.Current.Quit();
+                }
             } // else
         } // GameOver
 
@@ -375,8 +380,11 @@ namespace MyWordleGame
 
             else
             {
-                await DisplayAlert("Exit", "Thanks for playing", "Bye");
-                // Application.Current.MainPage = new MainPage();
+                var exitConfirmation = await DisplayAlert("Exit", "Are you sure you want to exit?", "Yes", "No");
+                if (exitConfirmation)
+                {
+                    Application.Current.Quit();
+                }
             } // else
         } // CorrectWord
 
