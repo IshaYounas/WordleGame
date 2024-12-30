@@ -40,9 +40,9 @@
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="FontAttributes" Value="Bold"/>
             <Setter Property="CornerRadius" Value="15"/>
-            <Setter Property="WidthRequest" Value="135"/>
+            <Setter Property="WidthRequest" Value="105"/>
             <Setter Property="HorizontalOptions" Value="Center"/>
-            <Setter Property="Margin" Value="20, 5, 20, 5"/>
+            <Setter Property="Margin" Value="5, 5, 5, 5"/>
         </Style>
 </ContentPage.Resources>
 
@@ -51,7 +51,7 @@
         <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="20">
 
             <!-- adding label for player names and asking input -->
-            <StackLayout HorizontalOptions="Center">
+            <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
                 <Label Text="Player 1's Name: "/>
                 <Entry x:Name="Player1Entry" Placeholder="Player 1" TextChanged="PlayerEntry_TextChanged"/>
 
@@ -59,10 +59,10 @@
                 <Entry x:Name="Player2Entry" Placeholder="Player 2" TextChanged="PlayerEntry_TextChanged"/>
 
                 <!-- bottons for game -->
-                <HorizontalStackLayout>
-                    <Button x:Name="Start" Text="Start Game" Clicked="Start_Clicked" IsEnabled="False" Style="{StaticResource ButtonStyle}"/>
-                    <Button x:Name="Restart" Text="Restart Game" Style="{StaticResource ButtonStyle}" Clicked="Restart_Clicked" IsEnabled="False"/>
-                    <Button x:Name="History" Text="View Game History" Style="{StaticResource ButtonStyle}" Clicked="History_Clicked" WidthRequest="175" IsEnabled="False"/>
+                <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                    <Button x:Name="Start" Text="Start" Clicked="Start_Clicked" IsEnabled="False" Style="{StaticResource ButtonStyle}"/>
+                    <Button x:Name="Restart" Text="Restart" Style="{StaticResource ButtonStyle}" Clicked="Restart_Clicked" IsEnabled="False"/>
+                    <Button x:Name="History" Text="History" Style="{StaticResource ButtonStyle}" Clicked="History_Clicked" IsEnabled="False"/>
                 </HorizontalStackLayout>
             </StackLayout>
         
@@ -92,7 +92,7 @@
             </Grid>
                
             <!-- keyboard -->
-            <Grid x:Name="keyboard" Padding="10" RowSpacing="4" ColumnSpacing="4" Grid.Row="2" >
+            <Grid x:Name="keyboard" Padding="10" RowSpacing="4" ColumnSpacing="4" Grid.Row="2" VerticalOptions="Center" HorizontalOptions="Center"> 
 
                 <!-- row allignment of the keyboard -->
                 <Grid.RowDefinitions>

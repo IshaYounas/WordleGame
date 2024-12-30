@@ -22,11 +22,14 @@
             <Label Text="No History Found" IsVisible="{Binding IsEmpty}" Style="{StaticResource HistoryLabels}"/>
         
             <!-- histopry avaliable -->
-            <CollectionView ItemsSource="{Binding Items}" IsVisible="{Binding IsEmpty}">
+            <CollectionView ItemsSource="{Binding Items}" IsVisible="{Binding IsNotEmpty}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout BackgroundColor="BlanchedAlmond" Padding="5" Margin="3">
-                            <Label Text="{Binding Description}" Style="{StaticResource HistoryLabels}"/>
+                            <Label Text="{Binding TimeStamp}" Style="{StaticResource HistoryLabels}"/>
+                            <Label Text="{Binding CorrectWord}" Style="{StaticResource HistoryLabels}"/>
+                            <Label Text="{Binding Guesses}" Style="{StaticResource HistoryLabels}"/>
+                            <Label Text="{Binding EmojiGrid}" Style="{StaticResource HistoryLabels}"/>
                         </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>

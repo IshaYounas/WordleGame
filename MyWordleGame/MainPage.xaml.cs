@@ -330,7 +330,7 @@ namespace MyWordleGame
             } // if
 
             PlayerHistory.Add(attempt); // adding the attempt to the history
-            string jsonNew = JsonSerializer.Serialize(PlayerHistory); 
+            string jsonNew = JsonSerializer.Serialize(PlayerHistory);
             File.WriteAllText(localPath, jsonNew);
         } // SaveHistory
 
