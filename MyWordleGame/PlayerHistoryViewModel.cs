@@ -64,7 +64,7 @@ namespace MyWordleGame
                     } // reader
                 } // try
 
-                catch (Exception ex) 
+                catch (Exception ex)
                 {
                     Console.WriteLine($"Error loading history: {ex.Message}");
                 } // catch
