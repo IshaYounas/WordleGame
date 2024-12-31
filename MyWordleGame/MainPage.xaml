@@ -6,24 +6,6 @@
 
     <!-- styling using Static Resources -->
     <ContentPage.Resources>
-        <!-- Keys -->
-        <Style x:Key="LetterKey" TargetType="Button">
-            <Setter Property="BackgroundColor" Value="LightSlateGray"/>
-            <Setter Property="TextColor" Value="SeaShell"/>
-            <Setter Property="FontSize" Value="16"/>
-            <Setter Property="FontAttributes" Value="Bold"/>
-            <Setter Property="CornerRadius" Value="10"/>
-            <Setter  Property="HeightRequest" Value="50"/>
-            <Setter Property="WidthRequest" Value="40"/>
-        </Style>
-
-        <!-- Enter & Del -->
-        <Style x:Key="WordsKey" TargetType="Button" BasedOn="{StaticResource LetterKey}">
-            <Setter Property="BackgroundColor" Value="LightGrey"/>
-            <Setter Property="WidthRequest" Value="78"/>
-            <Setter Property="TextColor" Value="DarkGoldenrod"/>
-        </Style>
-
         <!-- Title -->
         <Style x:Key="TitleStyle" TargetType="Label">
             <Setter Property="TextColor" Value="SeaGreen"/>
@@ -133,45 +115,6 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-
-                <!-- buttons for keyboard -->
-                <!--
-                <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Grid.Row="0" Spacing="5">
-                    <Button Text="Q" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                    <Button Text="W" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                    <Button Text="E" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                    <Button Text="R" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                    <Button Text="T" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                    <Button Text="Y" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                    <Button Text="U" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                    <Button Text="I" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                    <Button Text="O" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                    <Button Text="P" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                </StackLayout>
-
-                <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Grid.Row="1" Spacing="5">
-                    <Button Text="A" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                    <Button Text="S" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                    <Button Text="D" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                    <Button Text="F" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                    <Button Text="G" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                    <Button Text="H" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                    <Button Text="J" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                    <Button Text="K" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                    <Button Text="L" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                </StackLayout>
-
-                <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Grid.Row="2" Spacing="5">
-                    <Button Text="ENTER" Style="{StaticResource WordsKey}" Clicked="Enter_Clicked"/>
-                    <Button Text="Z" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                    <Button Text="X" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                    <Button Text="C" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                    <Button Text="V" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                    <Button Text="B" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                    <Button Text="N" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                    <Button Text="M" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
-                    <Button Text="DEL" Style="{StaticResource WordsKey}" Clicked="Del_Clicked"/>
-                </StackLayout>  -->
             </Grid>
         </VerticalStackLayout>
     </ScrollView>

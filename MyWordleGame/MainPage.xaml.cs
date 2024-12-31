@@ -138,11 +138,11 @@ namespace MyWordleGame
             } // foreach
 
             // resetting key button colours
-            foreach (var child in keyboard.Children)
+            /*foreach (var child in keyboard.Children)
             {
                 if (child is Button button)
-                    button.BackgroundColor = (Color)Application.Current.Resources["Salmon"]; // if
-            } // foreach
+                    button.BackgroundColor = (Color)Application.Current.Resources["Salmon"]; // if 
+            } // foreach */
 
             if (wordList.Count > 0)
             {
@@ -249,11 +249,14 @@ namespace MyWordleGame
                 string rowKeys = keyboardRows[row];
                 double startcol = 0; // start col position
 
+                if (row == 0)
+                    startcol = 0.5;
+
                 if (row == 1)
-                    startcol = 1.5;
+                    startcol = 1;
 
                 if (row == 2)
-                    startcol = 2.5;
+                    startcol = 1.5;
 
                 for (int col = 0; col < rowKeys.Length; col++)
                 {
@@ -438,11 +441,8 @@ namespace MyWordleGame
 
             else
             {
-                var exitConfirmation = await DisplayAlert("Exit", "Are you sure you want to exit?", "Yes", "No");
-                if (exitConfirmation)
-                {
-                    Application.Current.Quit();
-                }
+                await DisplayAlert("Exit", "Thanks for Playing", "Ok");
+                Application.Current.Quit();
             } // else
         } // GameOver
 
@@ -512,12 +512,19 @@ namespace MyWordleGame
         // animation methods
         private async Task CorrectWord()
         {
+            var labels = RowLabel(currentRow);
+            if (labels == null | labels.Length == 0)
+            {
+                Console.WriteLine("No labels found");
+                return;
+            } // if
+
             // changing background colour
             foreach (var label in RowLabel(currentRow))
             {
                 // rotate and change bg colour
                 await label.RotateTo(360, 1000);
-                label.BackgroundColor = Colors.MistyRose;
+                label.BackgroundColor = Colors.Green;
                 //audioPlayerFullCorrect.Play();
             } // foreach
 
@@ -540,11 +547,8 @@ namespace MyWordleGame
 
             else
             {
-                var exitConfirmation = await DisplayAlert("Exit", "Are you sure you want to exit?", "Yes", "No");
-                if (exitConfirmation)
-                {
-                    Application.Current.Quit();
-                }
+                await DisplayAlert("Exit", "Thanks for Playing", "Ok");
+                Application.Current.Quit();
             } // else
         } // CorrectWord
 
@@ -559,7 +563,7 @@ namespace MyWordleGame
         private async void WrongPosition(Label label)
         {
             // changing colour and shaking up & down
-            label.BackgroundColor = Colors.MintCream;
+            label.BackgroundColor = Colors.Yellow;
             await label.TranslateTo(0, -10, 100);
             await label.TranslateTo(0, 0, 100);
             //audioPlayerYellowsAndGreens.Play();
