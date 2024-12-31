@@ -115,12 +115,27 @@
 
                 <!-- row allignment of the keyboard -->
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
                 <!-- buttons for keyboard -->
+                <!--
                 <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Grid.Row="0" Spacing="5">
                     <Button Text="Q" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
                     <Button Text="W" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
@@ -156,7 +171,7 @@
                     <Button Text="N" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
                     <Button Text="M" Style="{StaticResource LetterKey}" Clicked="Key_Clicked"/>
                     <Button Text="DEL" Style="{StaticResource WordsKey}" Clicked="Del_Clicked"/>
-                </StackLayout>
+                </StackLayout>  -->
             </Grid>
         </VerticalStackLayout>
     </ScrollView>

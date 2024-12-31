@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Text.Json;
 using Microsoft.Maui.Controls;
-using Plugin.Maui.Audio;
+//using Plugin.Maui.Audio;
 
 namespace MyWordleGame
 {
@@ -22,9 +22,9 @@ namespace MyWordleGame
         private Player player2;
 
         // audio files
-        private IAudioPlayer audioPlayerFullCorrect;
-        private IAudioPlayer audioPlayerYellowsAndGreens;
-        private IAudioPlayer audioPlayerFullWrong;
+        //private IAudioPlayer audioPlayerFullCorrect;
+        //private IAudioPlayer audioPlayerYellowsAndGreens;
+        //private IAudioPlayer audioPlayerFullWrong;
 
         // constructor
         public MainPage()
@@ -39,7 +39,7 @@ namespace MyWordleGame
         {
             base.OnAppearing();
             await InitializeList();
-            await LoadAudioFiles(); 
+            //await LoadAudioFiles(); // crashing with audio files
         } // OnAppearing
 
         // methods for buttons - event handlers
@@ -192,6 +192,7 @@ namespace MyWordleGame
             History.IsEnabled = true;  // enabling history to be checked
 
             CreateGameGrid(); // creating the game grid
+            CreateKeyboard(); // creating keyboard grid
         } // Start_Clicked
 
         private void PlayerEntry_TextChanged(object sender, TextChangedEventArgs e)
@@ -231,6 +232,95 @@ namespace MyWordleGame
                 } // for (col)
             } // for (row)
         } // CreateGameGrid
+
+        private void CreateKeyboard()
+        {
+            keyboard.Children.Clear(); // clearing to reset the grid
+
+            string[] keyboardRows = new string[] { "QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM" };
+
+            for (int i = 0; i < 10; i++)
+            {
+                keyboard.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            } // for (i)
+
+            for (int row = 0; row < keyboardRows.Length; row++)
+            {
+                string rowKeys = keyboardRows[row];
+                double startcol = 0; // start col position
+
+                if (row == 1)
+                    startcol = 1.5;
+
+                if (row == 2)
+                    startcol = 2.5;
+
+                for (int col = 0; col < rowKeys.Length; col++)
+                {
+                    var button = new Button
+                    {
+                        // setting the properties for the grid
+                        Text = rowKeys[col].ToString(),
+                        BackgroundColor = Colors.LightSlateGray,
+                        FontSize = 16,
+                        TextColor = Colors.SaddleBrown,
+                        FontAttributes = FontAttributes.Bold,
+                        HeightRequest = 50,
+                        WidthRequest = 50
+                    }; // var button
+
+                    button.Clicked += Key_Clicked;
+
+                    // adding button to the grid position
+                    Grid.SetRow(button, row);
+                    Grid.SetColumn(button, (int)(startcol + col));
+                    keyboard.Children.Add(button);
+                } // for (col)
+
+                // adding space
+                keyboard.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) });
+            } // for (row)
+
+            // adding enter & delete button
+            var enterBtn = new Button
+            {
+                Text = "Enter",
+                BackgroundColor = Colors.LightGray,
+                TextColor = Colors.DarkGoldenrod,
+                FontAttributes = FontAttributes.Bold,
+                HeightRequest = 50,
+                WidthRequest = 100,
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.Center
+            }; // enterBtn
+
+            enterBtn.Clicked += Enter_Clicked;
+
+            var deleteBtn = new Button
+            {
+                Text = "Delete",
+                BackgroundColor = Colors.LightGray,
+                TextColor = Colors.DarkGoldenrod,
+                FontAttributes = FontAttributes.Bold,
+                HeightRequest = 50,
+                WidthRequest = 100,
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.Center
+            }; // deleteBtn
+
+            deleteBtn.Clicked += Del_Clicked;
+
+            // setting row, column and column span position
+            keyboard.Children.Add(enterBtn);
+            Grid.SetRow(enterBtn, keyboardRows.Length);
+            Grid.SetColumn(enterBtn, 0);
+            Grid.SetColumnSpan(enterBtn, 5);
+
+            keyboard.Children.Add(deleteBtn);
+            Grid.SetRow(deleteBtn, keyboardRows.Length);
+            Grid.SetColumn(deleteBtn, 5);
+            Grid.SetColumnSpan(deleteBtn, 5);
+        } // CreateKeyboard
 
         private void UpdateGuessDisplay()
         {
@@ -294,7 +384,7 @@ namespace MyWordleGame
                 else
                 {
                     label.BackgroundColor = Colors.Salmon;
-                    audioPlayerFullWrong.Play();
+                    //audioPlayerFullWrong.Play();
                 } // else
             } // for
         } // UpdateRow
@@ -428,7 +518,7 @@ namespace MyWordleGame
                 // rotate and change bg colour
                 await label.RotateTo(360, 1000);
                 label.BackgroundColor = Colors.MistyRose;
-                audioPlayerFullCorrect.Play();
+                //audioPlayerFullCorrect.Play();
             } // foreach
 
             string winner;
@@ -472,7 +562,7 @@ namespace MyWordleGame
             label.BackgroundColor = Colors.MintCream;
             await label.TranslateTo(0, -10, 100);
             await label.TranslateTo(0, 0, 100);
-            audioPlayerYellowsAndGreens.Play();
+            //audioPlayerYellowsAndGreens.Play();
         } // WrongPosition
 
         private Label[] RowLabel(int row)
@@ -576,6 +666,8 @@ namespace MyWordleGame
             } // catch
         } // DownloadFromOnline
 
+        /* 
+         // crashing with audio files
         private async Task LoadAudioFiles()
         {
             try
@@ -590,7 +682,7 @@ namespace MyWordleGame
             {
                 await DisplayAlert("error", "failed: " + ex.Message, "ok");
             } // catch 
-        } // LoadAudioFiles
+        } // LoadAudioFiles */
     } // class
 } // namespace
 
