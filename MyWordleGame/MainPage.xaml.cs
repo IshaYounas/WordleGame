@@ -132,7 +132,7 @@ namespace MyWordleGame
             foreach (var child in keyboard.Children)
             {
                 if (child is Button button)
-                    button.BackgroundColor = (Color)Application.Current.Resources["MidnightBlue"]; // if
+                    button.BackgroundColor = (Color)Application.Current.Resources["Salmon"]; // if
             } // foreach
 
             if (wordList.Count > 0)
@@ -283,7 +283,7 @@ namespace MyWordleGame
                 } // if
 
                 else
-                    label.BackgroundColor = Colors.MidnightBlue;
+                    label.BackgroundColor = Colors.Salmon;
             } // for
         } // UpdateRow
 
@@ -304,7 +304,7 @@ namespace MyWordleGame
                         }
 
                         else
-                            button.BackgroundColor = Colors.MidnightBlue; // else
+                            button.BackgroundColor = Colors.Salmon; // else
                     } // if
                 } // foreach
             } // foreach
@@ -374,17 +374,17 @@ namespace MyWordleGame
             {
                 foreach (var label in RowLabel(row))
                 {
-                    // correct position
+                    // correct position - grren
                     if (label.BackgroundColor == Colors.Green)
                         historyGrid += "🟩"; // if
 
-                    // correct letter but wrong position
+                    // correct letter but wrong position - yellow
                     else if (label.BackgroundColor == Colors.Yellow)
                         historyGrid += "🟨"; // else if
 
-                    // wrong letter
+                    // wrong letter - salmon
                     else
-                        historyGrid += "⬛"; // else
+                        historyGrid += "🟧"; // else
                 } // foreach
 
                 historyGrid += "\n"; // next line
