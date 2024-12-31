@@ -4,62 +4,73 @@
     {
         // variables
         public string Name { get; set; }
-        public int Score { get; set; }
-        private string filePath => $"{Name}.txt";
+        public int GamesPlayed { get; set; }
+        public int GamesWon { get; set; }
+        public List<string> GameHistory { get; set; }
+        public string HistoryFile { get; }
 
         // constructor
         public Player(string name)
         {
-            this.Name = name;
-
-            // calling methods
-            if (File.Exists(filePath))
-                LoadPlayer(); // previous player
-
-            else
-                NewPlayer();
+            Name = name;
+            GamesPlayed = 0;
+            GamesWon = 0;
+            GameHistory = new List<string>();
+            HistoryFile = $"{Name}_Saved.txt";
         } // Player
 
         // custom methods
-        private void LoadPlayer() // loading a saved player
+        public void SavePlayer()
         {
-            Console.WriteLine($"Welcome back, {Name}!");
-
             try
             {
-                string data = File.ReadAllText(filePath);
+                using (StreamWriter writer = new StreamWriter(HistoryFile, false))
+                {
+                    writer.WriteLine(Name);
+                    writer.WriteLine(GamesPlayed);
+                    writer.WriteLine(GamesWon);
 
-                // replacing the data string with "Score:"
-                if (int.TryParse(data.Replace("Score: ", ""), out int score))  // converting string into an integer
-                    Score = score; // if
-
-                else
-                    score = 0; // else
+                    foreach (var gameResult in GameHistory)
+                        writer.WriteLine(gameResult);
+                } // writer
             } // try
 
-            catch (Exception ex) 
+            catch (Exception ex)
             {
-                Console.WriteLine($"Error reading score, {ex.Message}");
-                Score = 0;
-            } // else
-        } // LoadPlayer
-
-        private void NewPlayer() // creating a new player
-        {
-            Console.Write($"Welcome to the game of Wordle, {Name}");
-            Score = 0;
-            SavePlayer();
-        } // NewPlayer
-
-        public void SavePlayer() // saving to a file
-        {
-            File.WriteAllText(filePath, $"Score: {Score}");
+                Console.WriteLine($"error saving data {ex.Message}");
+            } // catch
         } // SavePlayer
 
-        public void UpdateScore(int points) // updating score
+        public static Player LoadPlayer(string name)
         {
-            Score += points;
-            SavePlayer();
-        } // UpdateScore
+            var player = new Player(name);
+
+            if (File.Exists(player.HistoryFile))
+            {
+                try
+                {
+                    using (StreamReader reader = new StreamReader(player.HistoryFile))
+                    {
+                        player.Name = reader.ReadLine();
+                        player.GamesPlayed = int.Parse(reader.ReadLine());
+                        player.GamesWon = int.Parse(reader.ReadLine());
+
+                        string line;
+
+                        while ((line = reader.ReadLine()) != null)
+                        {
+                            player.GameHistory.Add(line);
+                        } // while
+                    } // reader
+                } // try
+
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"error loading player {ex.Message}");
+                } // catch
+            } // if
+
+            return player;
+        } // LoadPlayer
     } // class
 } // namespace

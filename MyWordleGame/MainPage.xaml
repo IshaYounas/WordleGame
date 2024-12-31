@@ -42,9 +42,26 @@
             <Setter Property="CornerRadius" Value="15"/>
             <Setter Property="WidthRequest" Value="105"/>
             <Setter Property="HorizontalOptions" Value="Center"/>
-            <Setter Property="Margin" Value="5, 5, 5, 5"/>
+            <Setter Property="Margin" Value="5, 20, 5, 5"/>
         </Style>
-</ContentPage.Resources>
+
+        <Style x:Key="LabelStyle" TargetType="Label">
+            <Setter Property="TextColor" Value="Gold"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontAttributes" Value="Bold"/>
+            <Setter Property="HorizontalOptions" Value="Center"/>
+            <Setter Property="VerticalOptions" Value="Start"/>
+        </Style>
+
+        <Style x:Key="EntryStyle" TargetType="Entry">
+            <Setter Property="TextColor" Value="Gold"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontAttributes" Value="Bold"/>
+            <Setter Property="HorizontalOptions" Value="Center"/>
+            <Setter Property="VerticalOptions" Value="Start"/>
+            <Setter Property="PlaceholderColor" Value="IndianRed"/>
+        </Style>
+    </ContentPage.Resources>
 
     <ScrollView>
         <!-- Creating grids -->
@@ -52,11 +69,11 @@
 
             <!-- adding label for player names and asking input -->
             <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
-                <Label Text="Player 1's Name: "/>
-                <Entry x:Name="Player1Entry" Placeholder="Player 1" TextChanged="PlayerEntry_TextChanged"/>
+                <Label Text="Player 1's Name: " Style="{StaticResource LabelStyle}"/>
+                <Entry x:Name="Player1Entry" Placeholder="Player 1" TextChanged="PlayerEntry_TextChanged" Style="{StaticResource EntryStyle}"/>
 
-                <Label Text="Player 2's Name: "/>
-                <Entry x:Name="Player2Entry" Placeholder="Player 2" TextChanged="PlayerEntry_TextChanged"/>
+                <Label Text="Player 2's Name: " Style="{StaticResource LabelStyle}"/>
+                <Entry x:Name="Player2Entry" Placeholder="Player 2" TextChanged="PlayerEntry_TextChanged" Style="{StaticResource EntryStyle}"/>
 
                 <!-- bottons for game -->
                 <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
@@ -68,6 +85,8 @@
         
             <!-- label for the title -->
             <Label Text="WORDLE" Style="{StaticResource TitleStyle}" Grid.Row="0"/>
+            
+            <Label x:Name="PlayerTurn" Text="Player 1's Turn" Style="{StaticResource LabelStyle}"/>
 
             <Grid x:Name="GameGrid" Margin="20" RowSpacing="4" ColumnSpacing="4" VerticalOptions="Center" HorizontalOptions="Center">
             

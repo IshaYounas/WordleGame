@@ -12,7 +12,11 @@ namespace MyWordleGame
         private const int maxRows = 6;
         private const int maxCols = 5;
         private int currentRow = 0;
+        private bool isPlayer1Turn = true;
         public PlayerHistoryViewModel HistoryViewModel { get; set; }
+
+        private Player player1;
+        private Player player2;
 
         // constructor
         public MainPage()
@@ -61,6 +65,14 @@ namespace MyWordleGame
             if (currentGuess.ToLower() == targetWord.ToLower())
             {
                 await CorrectWord();
+                UpdatePlayer();
+
+                if (isPlayer1Turn)
+                    PlayerTurn.Text = $"{Player1Entry.Text} Wins"; // if
+
+                else
+                    PlayerTurn.Text = $"{Player2Entry.Text} Wins"; // else
+
                 return;
             } // if
 
@@ -74,6 +86,19 @@ namespace MyWordleGame
 
             currentGuess = "";
             UpdateGuessDisplay();
+
+            if (isPlayer1Turn)
+            {
+                isPlayer1Turn = false;
+                PlayerTurn.Text = $"{Player2Entry.Text}'s Turn";
+            } // if
+
+            else
+            {
+                isPlayer1Turn = true;
+                PlayerTurn.Text = $"{Player1Entry.Text}'s Turn";
+            } // else
+
         } // Enter_Clicked
 
         private void Del_Clicked(object sender, EventArgs e)
@@ -91,6 +116,7 @@ namespace MyWordleGame
             // resetting everything for the new game
             currentRow = 0;
             currentGuess = "";
+            isPlayer1Turn = true;
 
             // clearing the grid
             foreach (var child in GameGrid.Children)
@@ -120,6 +146,12 @@ namespace MyWordleGame
 
             else
                 DisplayAlert("Error", "Word List Empty. Please try again", "OK"); // else
+
+            if (isPlayer1Turn)
+                PlayerTurn.Text = "Player 1's Turn"; // if
+
+            else
+                PlayerTurn.Text = "Player 2's Turn"; // else
         } // Restart_Clicked
 
         private async void History_Clicked(object sender, EventArgs e)
@@ -129,17 +161,20 @@ namespace MyWordleGame
 
         private void Start_Clicked(object sender, EventArgs e)
         {
-            string name1 = Player1Entry.Text.Trim();
-            string name2 = Player2Entry.Text.Trim();
+            if (!string.IsNullOrWhiteSpace(Player1Entry.Text))
+                player1 = Player.LoadPlayer(Player1Entry.Text); // if
 
-            // checking for empty inputs
-            if (string.IsNullOrWhiteSpace(name1) || string.IsNullOrWhiteSpace(name2))
-            {
-                DisplayAlert("Input", "Names must be entered", "Ok");
-                return;
-            } // if
+            else
+                player1 = Player.LoadPlayer("Player 1"); // else
 
-            DisplayAlert("Game Started", $"Welcome to Wordle, {name1} & {name2}", "Ok");
+            if (!string.IsNullOrWhiteSpace(Player2Entry.Text))
+                player1 = Player.LoadPlayer(Player2Entry.Text); // if
+
+            else
+                player1 = Player.LoadPlayer("Player 2"); // else
+
+            player1.SavePlayer();
+            player2.SavePlayer();
 
             Player1Entry.IsEnabled = false;
             Player2Entry.IsEnabled = false;
@@ -152,12 +187,11 @@ namespace MyWordleGame
 
         private void PlayerEntry_TextChanged(object sender, TextChangedEventArgs e)
         {
-            // checking if both enteries are filled
-            bool isPlayer1 = !string.IsNullOrWhiteSpace(Player1Entry.Text);
-            bool isPlayer2 = !string.IsNullOrWhiteSpace(Player2Entry.Text);
+            if (!string.IsNullOrWhiteSpace(Player1Entry.Text) && (!string.IsNullOrWhiteSpace(Player2Entry.Text)))
+                 Start.IsEnabled = true; // if
 
-            // enabling start button - only if both input boxes have names in them
-            Start.IsEnabled = isPlayer1 && isPlayer2;
+            else 
+                Start.IsEnabled = false; // else
         } // PlayerEntry_TextChanged
 
         // custom methods
@@ -359,6 +393,20 @@ namespace MyWordleGame
             return historyGrid.Trim();
         } // HistoryEmojiGrid
 
+        private void UpdatePlayer()
+        {
+            if (isPlayer1Turn)
+                player1.GamesWon++;
+
+            else
+                player2.GamesWon++;
+
+            player1.GamesPlayed++;
+            player2.GamesPlayed++;
+            player1.SavePlayer();
+            player2.SavePlayer();
+        } // UpdatePlayer
+
         // animation methods
         private async Task CorrectWord()
         {
@@ -370,9 +418,18 @@ namespace MyWordleGame
                 label.BackgroundColor = Colors.MistyRose;
             } // foreach
 
-            bool playAgain = await DisplayAlert("Congrats!", "You Won!!!", "Play Again", "Exit");
+            string winner;
+
+            if (isPlayer1Turn)
+                winner = player1.Name; // if
+
+            else
+                winner = player2.Name; // else
+
+            bool playAgain = await DisplayAlert("Congrats!", $"{winner} Won!!!", "Play Again", "Exit");
 
             SaveHistory(currentRow + 1, targetWord);
+            UpdatePlayer();
 
             // passing the current object as sender and empty args
             if (playAgain)
