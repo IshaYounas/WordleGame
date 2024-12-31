@@ -49,7 +49,7 @@
 		<MauiIcon Include="Resources\AppIcon\appicon.png" Base="10, 10" />
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#EBFFFF"/>
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#EBFFFF" />
 		
 		
 		<!-- Images -->
@@ -61,6 +61,12 @@
 
 		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="Resources\AudioFiles\FullCorrectWords.mp3" />
+	  <EmbeddedResource Include="Resources\AudioFiles\FullWrongWord.mp3" />
+	  <EmbeddedResource Include="Resources\AudioFiles\YellowsGreens.mp3" />
 	</ItemGroup>
 
 	<ItemGroup>

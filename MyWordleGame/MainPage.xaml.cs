@@ -1,4 +1,7 @@
-﻿using System.Text.Json;
+﻿using System.IO;
+using System.Text.Json;
+using Microsoft.Maui.Controls;
+using Plugin.Maui.Audio;
 
 namespace MyWordleGame
 {
@@ -18,6 +21,11 @@ namespace MyWordleGame
         private Player player1;
         private Player player2;
 
+        // audio files
+        private IAudioPlayer audioPlayerFullCorrect;
+        private IAudioPlayer audioPlayerYellowsAndGreens;
+        private IAudioPlayer audioPlayerFullWrong;
+
         // constructor
         public MainPage()
         {
@@ -31,6 +39,7 @@ namespace MyWordleGame
         {
             base.OnAppearing();
             await InitializeList();
+            await LoadAudioFiles(); 
         } // OnAppearing
 
         // methods for buttons - event handlers
@@ -168,10 +177,10 @@ namespace MyWordleGame
                 player1 = Player.LoadPlayer("Player 1"); // else
 
             if (!string.IsNullOrWhiteSpace(Player2Entry.Text))
-                player1 = Player.LoadPlayer(Player2Entry.Text); // if
+                player2 = Player.LoadPlayer(Player2Entry.Text); // if
 
             else
-                player1 = Player.LoadPlayer("Player 2"); // else
+                player2 = Player.LoadPlayer("Player 2"); // else
 
             player1.SavePlayer();
             player2.SavePlayer();
@@ -208,7 +217,7 @@ namespace MyWordleGame
                         // setting the properties for the grid
                         BackgroundColor = Colors.AntiqueWhite,
                         FontSize = 20,
-                        TextColor = Colors.Orchid,
+                        TextColor = Colors.DarkTurquoise,
                         HorizontalTextAlignment = TextAlignment.Center,
                         VerticalTextAlignment = TextAlignment.Center,
                         HeightRequest = 50,
@@ -277,13 +286,16 @@ namespace MyWordleGame
 
                     // finding the index of the currentGuess =in the trackLetter array
                     int index = Array.IndexOf(trackLetter, currentGuess[i].ToString().ToLower());
-                    
+
                     if (index != -1)
                         trackLetter[index] = '\0'; // storing letters that have been matched
                 } // if
 
                 else
+                {
                     label.BackgroundColor = Colors.Salmon;
+                    audioPlayerFullWrong.Play();
+                } // else
             } // for
         } // UpdateRow
 
@@ -416,6 +428,7 @@ namespace MyWordleGame
                 // rotate and change bg colour
                 await label.RotateTo(360, 1000);
                 label.BackgroundColor = Colors.MistyRose;
+                audioPlayerFullCorrect.Play();
             } // foreach
 
             string winner;
@@ -459,6 +472,7 @@ namespace MyWordleGame
             label.BackgroundColor = Colors.MintCream;
             await label.TranslateTo(0, -10, 100);
             await label.TranslateTo(0, 0, 100);
+            audioPlayerYellowsAndGreens.Play();
         } // WrongPosition
 
         private Label[] RowLabel(int row)
@@ -561,6 +575,22 @@ namespace MyWordleGame
                 Console.WriteLine($"Error: {ex.Message}");
             } // catch
         } // DownloadFromOnline
+
+        private async Task LoadAudioFiles()
+        {
+            try
+            {
+                // Loading files when the app opens from resources
+                audioPlayerFullCorrect = AudioManager.Current.CreatePlayer(await FileSystem.OpenAppPackageFileAsync("Resources/AudioFiles/FullCorrectWords.mp3"));
+                audioPlayerYellowsAndGreens = AudioManager.Current.CreatePlayer(await FileSystem.OpenAppPackageFileAsync("Resources/AudioFiles/YellowsGreens.mp3"));
+                audioPlayerFullWrong = AudioManager.Current.CreatePlayer(await FileSystem.OpenAppPackageFileAsync("Resources/AudioFiles/FullWrongWord.mp3"));
+            } // try
+
+            catch (Exception ex)
+            {
+                await DisplayAlert("error", "failed: " + ex.Message, "ok");
+            } // catch 
+        } // LoadAudioFiles
     } // class
 } // namespace
 
